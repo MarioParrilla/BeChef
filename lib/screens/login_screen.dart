@@ -119,8 +119,9 @@ class _LoginForm extends StatelessWidget {
                 final String? errorMessage = await authService.login(loginForm.email, loginForm.password);
 
                 
-                if(errorMessage == null) Navigator.of(context).pushReplacementNamed('home');
-                else{
+                if(errorMessage == null) {
+                  Navigator.of(context).pushReplacementNamed('home');
+                } else{
                   NotificationsService.showSnackBar('Inicio de sesión incorrecto');
                   loginForm.isLoading = false;
                 }

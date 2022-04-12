@@ -1,4 +1,5 @@
 import 'package:be_chef_proyect/providers/providers.dart';
+import 'package:be_chef_proyect/screens/screens.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       create: (_) => BotttonNavProvider(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Center(child: Image(image: AssetImage('assets/bechef_logo.png'), width:50, height:50, color: Colors.white)),
+          title: const Image(image: AssetImage('assets/bechef_logo.png'), width:50, height:50, color: Colors.white),
           backgroundColor: Colors.deepOrange,
           elevation: 0,
           actions: [
@@ -51,12 +52,12 @@ class _Pages extends StatelessWidget {
       children: [
 
         Container(
-          color: Colors.deepOrange,
-        ), 
-
-        Container(
           color: Colors.blueAccent,
         ), 
+        Container(
+          color: Colors.greenAccent,
+        ), 
+        const ProfileScreen(), 
 
       ],
     );
@@ -77,6 +78,7 @@ class _BNavBar extends StatelessWidget {
           selectedItemColor: Colors.deepOrange,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio', ),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Busqueda', ),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil', ),
           ],
         );
