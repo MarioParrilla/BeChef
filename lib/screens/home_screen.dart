@@ -51,9 +51,8 @@ class _Pages extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
 
-        Container(
-          color: Colors.blueAccent,
-        ), 
+        const HomePageScreen(),
+
         Container(
           color: Colors.greenAccent,
         ), 

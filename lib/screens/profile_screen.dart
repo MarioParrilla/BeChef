@@ -114,12 +114,12 @@ class _RecipeCard extends StatelessWidget {
         child: Row(
           children: [
             
-            Image(
-              
-              height: 200,
+            FadeInImage(
+              placeholder: const AssetImage('assets/bechef_logo.png'), 
+              image: NetworkImage(urlImageRecipe),
               width: 150,
+              height: 150,
               fit: BoxFit.cover,
-              image: NetworkImage(urlImageRecipe)
             ),
     
             Container(
