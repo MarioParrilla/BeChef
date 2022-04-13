@@ -42,15 +42,23 @@ class _HorizontalRecipes extends StatelessWidget {
         children: [
           const SizedBox( height: 10),
           Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                Text(
                   title, 
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+                Container(
+                  margin: const EdgeInsets.only(left: 3, top: 3),
+                  child: const Icon(Icons.arrow_forward_ios_outlined, size: 15, color: Colors.black)
+                ),
+              ],
+            )
+          ),
 
               const SizedBox(height: 5),
 
@@ -62,13 +70,19 @@ class _HorizontalRecipes extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
-                    child: FadeInImage(
+                    child: 
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        child: FadeInImage(
                       placeholder: const AssetImage('assets/bechef_logo.png'), 
                       image: images[index],
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
                     ),
+                    ),
+                  ),
                   )
                 ),
               ),

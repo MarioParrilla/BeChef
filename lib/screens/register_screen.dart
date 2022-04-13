@@ -115,7 +115,7 @@ class _LoginForm extends StatelessWidget {
 
                 
                 if(errorMessage == null) {
-                  Navigator.of(context).pushReplacementNamed('home');
+                  Navigator.of(context).popAndPushNamed('home');
                 } else{
                   NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
                   loginForm.isLoading = false;

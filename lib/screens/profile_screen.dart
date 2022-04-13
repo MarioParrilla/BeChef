@@ -109,38 +109,47 @@ class _RecipeCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(10.0),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        height: 200,
+        height: 150,
         color: Colors.deepOrange,
         child: Row(
           children: [
-            
-            FadeInImage(
-              placeholder: const AssetImage('assets/bechef_logo.png'), 
-              image: NetworkImage(urlImageRecipe),
-              width: 150,
-              height: 150,
-              fit: BoxFit.cover,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Container(
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/bechef_logo.png'), 
+                  image: NetworkImage(urlImageRecipe),
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                )
             ),
+          ),
     
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-    
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    width: 150,
-                    child: const Text('Recipe Name', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )),
-                  const SizedBox(
-                    width: 150,
-                    child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
-                  )),
-    
-                ]
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+                margin: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                color: Colors.white,
+                child: Column(
+                  children: [
+
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      width: 180,
+                      child: const Text('Recipe Name', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
+                    const SizedBox(
+                      width: 180,
+                      child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
+                    )),
+
+                  ]
+                ),
               ),
-            ),
-    
+          ),
+  
           ],
         ),
       ),
