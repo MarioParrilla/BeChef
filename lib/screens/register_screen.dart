@@ -41,7 +41,7 @@ class RegisterScreen extends StatelessWidget {
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.green),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.of(context).pushReplacementNamed('login'),
               ),
               const SizedBox( height: 15, ),
 
@@ -114,8 +114,9 @@ class _LoginForm extends StatelessWidget {
                 final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
 
                 
-                if(errorMessage == null) Navigator.of(context).pushReplacementNamed('home');
-                else{
+                if(errorMessage == null) {
+                  Navigator.of(context).pushReplacementNamed('home');
+                } else{
                   NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
                   loginForm.isLoading = false;
                 }

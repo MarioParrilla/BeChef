@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                   style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.deepOrange),
                 ),
-                onPressed: () => Navigator.of(context).pushNamed('register'),
+                onPressed: () => Navigator.of(context).pushReplacementNamed('register'),
               ),
               const SizedBox( height: 15, ),
 

@@ -50,6 +50,7 @@ class AuthService extends ChangeNotifier{
 
     if (response.containsKey('idToken')) {
       await storage.write(key: 'idToken', value: response['idToken']);
+      await storage.write(key: 'idToken', value: email);
       return null;
     }else{
       return response['error']['message'];
