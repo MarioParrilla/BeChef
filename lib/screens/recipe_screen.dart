@@ -14,6 +14,7 @@ class RecipeScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Stack(
@@ -33,7 +34,9 @@ class RecipeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save_rounded),
         backgroundColor: Colors.deepOrange,
-        onPressed: () => {},
+        onPressed: () => {
+          Navigator.of(context).pop()
+        },
       )
     );
   }

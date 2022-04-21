@@ -91,7 +91,7 @@ class _RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {/*Navigator.of(context).pushNamed('recipe')*/},
+      onTap: () => {Navigator.of(context).pushNamed('infoRecipe')},
       child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           child: 
