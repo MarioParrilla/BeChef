@@ -15,7 +15,8 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthService())
+        ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => RecipeService()),
       ],
       child: const BeChefApp(),
     );
@@ -42,6 +43,7 @@ class BeChefApp extends StatelessWidget {
         'home': ( _ ) => const HomeScreen(),
         'login': ( _ ) => const LoginScreen(),
         'register': ( _ ) => const RegisterScreen(),
+        'recipe': ( _ ) => const RecipeScreen(),
       },
       onGenerateRoute: (settings) => onGenerateRoute(settings),
       scaffoldMessengerKey: NotificationsService.messagerKey,

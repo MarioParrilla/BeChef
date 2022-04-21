@@ -1,10 +1,15 @@
+import 'package:be_chef_proyect/services/recipe_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final recipeService = Provider.of<RecipeService>(context);
+;
 
     return Container(
       child: SingleChildScrollView(
@@ -68,26 +73,41 @@ class _HorizontalRecipes extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   itemCount: images.length,
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    child: 
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Container(
-                        child: FadeInImage(
-                      placeholder: const AssetImage('assets/bechef_logo.png'), 
-                      image: images[index],
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
-                    ),
-                  ),
-                  )
+                  itemBuilder: (context, index) => _RecipeCard(img: images[index],)
                 ),
               ),
         ]
       )
+    );
+  }
+}
+
+class _RecipeCard extends StatelessWidget {
+
+  final NetworkImage img;
+
+  const _RecipeCard({Key? key, required this.img}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => {/*Navigator.of(context).pushNamed('recipe')*/},
+      child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          child: 
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              child: FadeInImage(
+            placeholder: const AssetImage('assets/bechef_logo.png'), 
+            image: img,
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+          ),
+        ),
+      ),
     );
   }
 }

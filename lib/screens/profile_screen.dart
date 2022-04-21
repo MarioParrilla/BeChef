@@ -47,8 +47,8 @@ class ProfileScreen extends StatelessWidget {
       floatingActionButton: true
       ? FloatingActionButton(
         child: const Icon(Icons.add),
-        backgroundColor: Colors.deepOrange[300],
-        onPressed: (){},
+        backgroundColor: Colors.deepOrange,
+        onPressed: () => Navigator.of(context).pushNamed('recipe'),
       )
       // ignore: dead_code
       : null,
@@ -105,52 +105,55 @@ class _RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        height: 150,
-        color: Colors.deepOrange,
-        child: Row(
-          children: [
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed('recipe'),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          height: 150,
+          color: Colors.deepOrange,
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
+                child: Container(
+                  child: FadeInImage(
+                    placeholder: const AssetImage('assets/bechef_logo.png'), 
+                    image: NetworkImage(urlImageRecipe),
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  )
+              ),
+            ),
+      
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/bechef_logo.png'), 
-                  image: NetworkImage(urlImageRecipe),
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                )
-            ),
-          ),
+                  margin: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
     
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: Container(
-                margin: const EdgeInsets.only(left: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.white,
-                child: Column(
-                  children: [
-
-                    Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      width: 180,
-                      child: const Text('Recipe Name', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )),
-                    const SizedBox(
-                      width: 180,
-                      child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
-                    )),
-
-                  ]
+                      Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        width: 180,
+                        child: const Text('Recipe Name', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      )),
+                      const SizedBox(
+                        width: 180,
+                        child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
+                      )),
+    
+                    ]
+                  ),
                 ),
-              ),
+            ),
+      
+            ],
           ),
-  
-          ],
         ),
       ),
     );

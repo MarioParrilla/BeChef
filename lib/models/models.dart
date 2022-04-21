@@ -1,0 +1,1 @@
+export 'package:be_chef_proyect/models/Recipe.dart';
