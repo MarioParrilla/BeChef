@@ -1,4 +1,3 @@
-import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class InfoRecipeScreen extends StatelessWidget {
