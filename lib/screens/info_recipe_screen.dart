@@ -25,6 +25,13 @@ class InfoRecipeScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.close_rounded),
+        backgroundColor: Colors.deepOrange,
+        onPressed: () => {
+          Navigator.of(context).pop()
+        },
+      )
     );
   }
 }

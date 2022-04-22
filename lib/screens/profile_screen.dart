@@ -70,21 +70,34 @@ class _ProfileHeader extends StatelessWidget {
             child: Row(
               children: [
 
-                Container(
-                  margin: const EdgeInsets.only(left: 20, right: 20,),
-                  child: const CircleAvatar(
-                    maxRadius: 50,
-                    backgroundImage: NetworkImage('https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg'),
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20,),
+                      child: const CircleAvatar(
+                        maxRadius: 50,
+                        backgroundImage: NetworkImage('https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg'),
+                      ),
+                    ),
+                    Positioned(
+                      top: 30,
+                      left: 50,
+                      child: GestureDetector(
+                        onTap: () => {},
+                        child: const Icon(Icons.edit, color: Color.fromRGBO(0, 0, 0, .3), size: 40,),
+                      ),
+                    ),
+                  ]
                 ),
+
                 Column(
                   children: [
-
                     Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      width: 150,
-                      child: const Text('username', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )),
+                        margin: const EdgeInsets.only(top: 30),
+                        width: 150,
+                        child: const Text('username', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
+
                     const SizedBox(
                       width: 150,
                       child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
