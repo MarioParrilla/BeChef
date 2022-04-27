@@ -2,8 +2,9 @@ import 'package:be_chef_proyect/screens/screens.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:be_chef_proyect/providers//providers.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const AppState());
 }
 
@@ -16,7 +17,9 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => ProfileInfoService()),
         ChangeNotifierProvider(create: (_) => RecipeService()),
+        ChangeNotifierProvider(create: (_) => DataProfileProvider()),
       ],
       child: const BeChefApp(),
     );

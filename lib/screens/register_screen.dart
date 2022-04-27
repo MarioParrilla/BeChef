@@ -83,7 +83,7 @@ class _LoginForm extends StatelessWidget {
             CustomInputField(
               color: color, labelText: 'Contraseña', 
               hintText: '******', icon: Icons.lock, isPassword: true,
-              validator: ( String value ) => value.length > 5 ? null : 'Debe contener más de 5 caracteres',
+              validator: ( String value ) => value.length > 4 ? null : 'Debe contener más de 5 caracteres',
               onChange: ( String value ) => loginForm.password = value,
             ),
 
@@ -112,7 +112,6 @@ class _LoginForm extends StatelessWidget {
                 loginForm.isLoading = true;
 
                 final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
-
                 
                 if(errorMessage == null) {
                   Navigator.of(context).popAndPushNamed('home');

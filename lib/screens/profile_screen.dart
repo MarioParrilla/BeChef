@@ -1,6 +1,11 @@
 
 
+import 'package:be_chef_proyect/services/profile_info_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../widgets/custom_input_field.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({ Key? key }) : super(key: key);
@@ -64,6 +69,38 @@ class _ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final profileInfoProvide = Provider.of<ProfileInfoService>(context, listen: false);
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Editar Perfil"),
+      content: Container(
+        height: 120,
+        child: Column(
+          children: [
+            CustomInputField(
+              color: Colors.deepOrange, labelText: 'Username',
+              hintText: 'username', icon: Icons.supervised_user_circle, isPassword: false,
+              validator: ( String value ) => {}/*value.length > 4 ? null : 'Debe contener más de 4 caracteres'*/,
+              onChange: ( String value ) => {/*loginForm.password = value*/},
+            ),
+            CustomInputField(
+              color: Colors.deepOrange, labelText: 'Descripción',
+              hintText: 'Descripción', icon: Icons.text_fields, isPassword: false,
+              validator: ( String value ) => {}/*value.length > 4 ? null : 'Debe contener más de 4 caracteres'*/,
+              onChange: ( String value ) => {/*loginForm.password = value*/},
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          child: Text("Editar", style: TextStyle(color: Colors.deepOrange)),
+          onPressed: () => profileInfoProvide.test(),//Navigator.of(context).pop(),
+        ),
+      ],
+    );
+
     return SizedBox(
             height: height * 0.2,
             //color: Colors.blueAccent,
@@ -95,21 +132,33 @@ class _ProfileHeader extends StatelessWidget {
                     Container(
                         margin: const EdgeInsets.only(top: 30),
                         width: 150,
-                        child: const Text('username', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )),
-
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('username', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                            GestureDetector(
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (c) => alert,
+                              ),
+                              child: Icon(Icons.edit, color: Color.fromRGBO(0, 0, 0, .3), size: 20,)
+                            ),
+                          ],
+                        ),
+                  ),
                     const SizedBox(
                       width: 150,
                       child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
                     )),
-
                   ]
-                )
+                ),
+
               ],
             ),
           );
   }
 }
+
 
 class _RecipeCard extends StatelessWidget {
   final String urlImageRecipe;
