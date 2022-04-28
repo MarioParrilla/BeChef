@@ -17,9 +17,9 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(create: (_) => ProfileInfoService()),
         ChangeNotifierProvider(create: (_) => RecipeService()),
         ChangeNotifierProvider(create: (_) => DataProfileProvider()),
+        ChangeNotifierProvider(create: (_) => DataUserLoggedService()),
       ],
       child: const BeChefApp(),
     );

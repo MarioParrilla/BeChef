@@ -1,4 +1,5 @@
 
+import 'package:be_chef_proyect/providers/data_profile_provider.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:be_chef_proyect/screens/screens.dart';
@@ -12,6 +13,8 @@ class InitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>(context, listen: false);
+    final dataUserLoggedService = Provider.of<DataUserLoggedService>(context, listen: false);
+    final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: false);
 
     return FutureBuilder(
       future: authService.readToken(duration: 3),
@@ -41,17 +44,35 @@ class InitScreen extends StatelessWidget {
             );
         }
 
-        Future.microtask((){
+        Future.microtask(() async {
 
-          snapshot.data! != ''
-          ? Navigator.pushReplacement(context, PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const HomeScreen(),
-            transitionDuration: const Duration(seconds: 0),
-            ))
-          : Navigator.pushReplacement(context, PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const LoginScreen(),
-            transitionDuration: const Duration(seconds: 0),
+          if(snapshot.data! != ''){
+            dynamic username = await dataUserLoggedService.getUsername();
+
+            if ( username != null ) {
+              dataProfileProvider.username = username;
+              Navigator.pushReplacement(context, PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const HomeScreen(),
+                transitionDuration: const Duration(seconds: 0),
+              ));
+            }
+            else{
+              authService.logout();
+              Navigator.pushReplacement(context, PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const LoginScreen(),
+                transitionDuration: const Duration(seconds: 0),
+              ));
+            }
+
+          }
+          else{
+            Navigator.pushReplacement(context, PageRouteBuilder(
+              pageBuilder: (_, __, ___) => const LoginScreen(),
+              transitionDuration: const Duration(seconds: 0),
             ));
+          }
+            
+
         });
 
         return Container();

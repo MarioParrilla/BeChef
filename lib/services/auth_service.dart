@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/user.dart';
 import '../utils/AppData.dart';
 
 class AuthService extends ChangeNotifier{
@@ -22,16 +22,16 @@ class AuthService extends ChangeNotifier{
     final request = await http.post(url, headers: {"Content-Type": "application/json"}, body: json.encode(authData));
 
     final Map<String, dynamic> response = json.decode(request.body);
-
-    if (response.containsKey('username')) {
-      await storage.write(key: 'username', value: response['username']);
+    
+    if (response.containsKey('token')) {
+      await storage.write(key: 'token', value: response['token']);
       return null;
     }else{
       return response['error'];
     }
   }
 
-  Future<String?> createUser(String email, String password) async {
+  Future createUser(String email, String password, BuildContext context) async {
 
     Map<String, String> authData = {
       'email': email,
@@ -44,9 +44,9 @@ class AuthService extends ChangeNotifier{
 
     final Map<String, dynamic> response = json.decode(request.body);
 
-    if (response.containsKey('username')) {
-      await storage.write(key: 'username', value: response['username']);
-      return null;
+    if (response.containsKey('token')) {
+      await storage.write(key: 'token', value: response['token']);
+      return User.fromMap(response);
     }else{
       return response['error'];
     }
@@ -55,7 +55,7 @@ class AuthService extends ChangeNotifier{
 
   Future logout() async {
 
-    await storage.delete(key: 'username');
+    await storage.delete(key: 'token');
 
   }
 
@@ -63,7 +63,7 @@ class AuthService extends ChangeNotifier{
 
     await Future.delayed(Duration(seconds: duration));
 
-    return await storage.read(key: 'username') ?? '';
+    return await storage.read(key: 'token') ?? '';
 
   }
 

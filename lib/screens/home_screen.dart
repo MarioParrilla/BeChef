@@ -47,6 +47,7 @@ class _Pages extends StatelessWidget {
     final bottonNavProvider = Provider.of<BotttonNavProvider>(context);
 
     return PageView(
+
       controller: bottonNavProvider.pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: [

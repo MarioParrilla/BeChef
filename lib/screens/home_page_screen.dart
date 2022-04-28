@@ -9,9 +9,9 @@ class HomePageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final recipeService = Provider.of<RecipeService>(context);
-;
 
     return Container(
+      color: const Color.fromRGBO(250, 250, 250, 1),
       child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(

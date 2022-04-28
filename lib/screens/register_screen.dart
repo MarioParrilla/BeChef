@@ -1,8 +1,11 @@
+import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:be_chef_proyect/providers/login_form_provider.dart';
 import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/providers.dart';
 
 class RegisterScreen extends StatelessWidget {
 
@@ -111,9 +114,11 @@ class _LoginForm extends StatelessWidget {
 
                 loginForm.isLoading = true;
 
-                final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
-                
-                if(errorMessage == null) {
+                final dynamic? createdUser = await authService.createUser(loginForm.email, loginForm.password, context);
+
+                if(createdUser.runtimeType == User) {
+                final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: false);
+                dataProfileProvider.username = (createdUser as User).username;
                   Navigator.of(context).popAndPushNamed('home');
                 } else{
                   NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
