@@ -47,10 +47,11 @@ class InitScreen extends StatelessWidget {
         Future.microtask(() async {
 
           if(snapshot.data! != ''){
-            dynamic username = await dataUserLoggedService.getUsername();
+            dynamic user = await dataUserLoggedService.getUserByToken();
 
-            if ( username != null ) {
-              dataProfileProvider.username = username;
+            if ( user != null ) {
+              dataProfileProvider.username = user.username;
+              dataProfileProvider.description = user.description;
               Navigator.pushReplacement(context, PageRouteBuilder(
                 pageBuilder: (_, __, ___) => const HomeScreen(),
                 transitionDuration: const Duration(seconds: 0),

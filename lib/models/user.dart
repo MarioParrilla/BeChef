@@ -10,11 +10,13 @@ class User {
         required this.username,
         required this.email,
         required this.password,
-        required this.admin,
+        required this.admin, 
+        required this.description,
     });
 
     int id;
     String username;
+    String description;
     String email;
     String password;
     bool admin;
@@ -26,6 +28,7 @@ class User {
     factory User.fromMap(Map<String, dynamic> json) => User(
         id: json["id"],
         username: json["username"],
+        description: json["description"],
         email: json["email"],
         password: json["password"],
         admin: json["admin"],
@@ -34,6 +37,7 @@ class User {
     Map<String, dynamic> toMap() => {
         "id": id,
         "username": username,
+        "description": description,
         "email": email,
         "password": password,
         "admin": admin,

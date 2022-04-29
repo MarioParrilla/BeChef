@@ -86,6 +86,7 @@ class _ProfileHeader extends StatelessWidget {
 
     final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: false);
     String username = dataProfileProvider.username.isEmpty ? 'username' : dataProfileProvider.username;
+    String description = dataProfileProvider.description.isEmpty ? 'description' : dataProfileProvider.description;
 
     return Container(
       padding: const EdgeInsets.only(top: 20),
@@ -106,10 +107,10 @@ class _ProfileHeader extends StatelessWidget {
               Container(
                   width: 150,
                   child: Text(username, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-              const SizedBox(
+              ),
+              SizedBox(
                 width: 150,
-                child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
+                child: Text(description, maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
               )),
             ]
           ),
@@ -167,7 +168,7 @@ class _RecipeCard extends StatelessWidget {
                     children: [
     
                       Container(
-                        margin: const EdgeInsets.only(top: 30),
+                        margin: const EdgeInsets.only(top: 10),
                         child: const Text('Recipe Name', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       )),
                       const Flexible(

@@ -4,6 +4,8 @@ import 'package:be_chef_proyect/providers/providers.dart';
 import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../models/models.dart';
+
 class LoginScreen extends StatelessWidget {
 
   const LoginScreen({Key? key}) : super(key: key);
@@ -61,6 +63,8 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final loginForm = Provider.of<LoginFormProvider>(context);
+    final dataUserLoggedService = Provider.of<DataUserLoggedService>(context, listen: false);
+    final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: false);
 
     return Container(
       child: Form(
@@ -120,7 +124,17 @@ class _LoginForm extends StatelessWidget {
 
                 
                 if(errorMessage == null) {
-                  Navigator.of(context).pushReplacementNamed('home');
+                  dynamic user = await dataUserLoggedService.getUserByToken();
+                  if ( user != null ) {
+                    dataProfileProvider.username = user.username;
+                    dataProfileProvider.description = user.description;
+                    Navigator.of(context).pushReplacementNamed('home');
+                  }
+                  else{
+                    authService.logout();
+                    NotificationsService.showSnackBar('Inicio de sesión incorrecto');
+                    loginForm.isLoading = false;
+                  }
                 } else{
                   NotificationsService.showSnackBar('Inicio de sesión incorrecto');
                   loginForm.isLoading = false;
