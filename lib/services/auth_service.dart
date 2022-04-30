@@ -10,7 +10,7 @@ class AuthService extends ChangeNotifier{
 
   final storage = const FlutterSecureStorage();
 
-  Future<String?> login(String email, String password) async {
+  Future<String?> login(BuildContext context, String email, String password) async {
 
     Map<String, String> authData = {
       'email': email,
@@ -19,19 +19,26 @@ class AuthService extends ChangeNotifier{
 
     final url = Uri.http(AppData.baseUrl, '/auth/login');
 
-    final request = await http.post(url, headers: {"Content-Type": "application/json"}, body: json.encode(authData));
+    try {
+        
+      final request = await http.post(url, headers: {"Content-Type": "application/json"}, body: json.encode(authData)).timeout(const Duration(seconds: 15));
 
-    final Map<String, dynamic> response = json.decode(request.body);
-    
-    if (response.containsKey('token')) {
-      await storage.write(key: 'token', value: response['token']);
-      return null;
-    }else{
-      return response['error'];
+      final Map<String, dynamic> response = json.decode(request.body);
+      
+      if (response.containsKey('token')) {
+        await storage.write(key: 'token', value: response['token']);
+        return null;
+      }else{
+        return response['error'];
+      }
+
+    } catch (e) {
+      await showDialog(context: context, builder: (_) => AppData.alert);
     }
+
   }
 
-  Future createUser(String email, String password, BuildContext context) async {
+  Future createUser(BuildContext context, String email, String password) async {
 
     Map<String, String> authData = {
       'email': email,
@@ -40,15 +47,21 @@ class AuthService extends ChangeNotifier{
 
     final url = Uri.http(AppData.baseUrl, '/auth/register');
 
-    final request = await http.post(url, headers: {"Content-Type": "application/json"}, body: json.encode(authData));
+    try {
+      
+      final request = await http.post(url, headers: {"Content-Type": "application/json"}, body: json.encode(authData)).timeout(const Duration(seconds: 15));
 
-    final Map<String, dynamic> response = json.decode(request.body);
+      final Map<String, dynamic> response = json.decode(request.body);
 
-    if (response.containsKey('token')) {
-      await storage.write(key: 'token', value: response['token']);
-      return User.fromMap(response);
-    }else{
-      return response['error'];
+      if (response.containsKey('token')) {
+        await storage.write(key: 'token', value: response['token']);
+        return User.fromMap(response);
+      }else{
+        return response['error'];
+      }
+
+    } catch (e) {
+      await showDialog(context: context, builder: (_) => AppData.alert);
     }
   }
 

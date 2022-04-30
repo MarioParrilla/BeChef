@@ -1,3 +1,4 @@
+import 'package:be_chef_proyect/screens/register_screen.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:be_chef_proyect/providers/providers.dart';
@@ -43,8 +44,11 @@ class LoginScreen extends StatelessWidget {
                   style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.deepOrange),
                 ),
-                onPressed: () => Navigator.of(context).popAndPushNamed('register'),
-              ),
+                onPressed: () => Navigator.of(context).pushReplacement(PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const RegisterScreen(),
+                transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+                transitionDuration: const Duration( milliseconds: 200 ),
+              ))),
               const SizedBox( height: 15, ),
 
             ],
@@ -120,11 +124,11 @@ class _LoginForm extends StatelessWidget {
 
                 loginForm.isLoading = true;
 
-                final String? errorMessage = await authService.login(loginForm.email, loginForm.password);
+                final String? errorMessage = await authService.login(context, loginForm.email, loginForm.password);
 
                 
                 if(errorMessage == null) {
-                  dynamic user = await dataUserLoggedService.getUserByToken();
+                  dynamic user = await dataUserLoggedService.getUserByToken(context);
                   if ( user != null ) {
                     dataProfileProvider.username = user.username;
                     dataProfileProvider.description = user.description;

@@ -5,6 +5,7 @@ import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/providers.dart';
+import 'screens.dart';
 
 class RegisterScreen extends StatelessWidget {
 
@@ -43,8 +44,11 @@ class RegisterScreen extends StatelessWidget {
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.green),
                 ),
-                onPressed: () => Navigator.of(context).pushReplacementNamed('login'),
-              ),
+                onPressed: () => Navigator.of(context).pushReplacement(PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const LoginScreen(),
+                transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+                transitionDuration: const Duration( milliseconds: 200 ),
+              ))),
               const SizedBox( height: 15, ),
 
             ],
@@ -114,7 +118,7 @@ class _LoginForm extends StatelessWidget {
 
                 loginForm.isLoading = true;
 
-                final dynamic? createdUser = await authService.createUser(loginForm.email, loginForm.password, context);
+                final dynamic createdUser = await authService.createUser(context, loginForm.email, loginForm.password);
 
                 if(createdUser.runtimeType == User) {
                   dataProfileProvider.username = createdUser.username;

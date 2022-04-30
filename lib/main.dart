@@ -48,6 +48,7 @@ class BeChefApp extends StatelessWidget {
         'register': ( _ ) => const RegisterScreen(),
         'recipe': ( _ ) => const RecipeScreen(),
         'infoRecipe': ( _ ) => const InfoRecipeScreen(),
+        'editProfile': ( _ ) => const EditProfileScreen(),
       },
       onGenerateRoute: (settings) => onGenerateRoute(settings),
       scaffoldMessengerKey: NotificationsService.messagerKey,

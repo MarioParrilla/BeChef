@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
             _ProfileHeader(height: height),
             true ? 
                 TextButton(
-                  onPressed: () => {}, 
+                  onPressed: () => { Navigator.of(context).pushNamed('editProfile')}, 
                   child: Text('Editar Perfil'), 
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),

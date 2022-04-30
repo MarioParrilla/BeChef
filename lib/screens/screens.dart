@@ -6,3 +6,4 @@ export 'package:be_chef_proyect/screens/profile_screen.dart';
 export 'package:be_chef_proyect/screens/home_page_screen.dart';
 export 'package:be_chef_proyect/screens/recipe_screen.dart';
 export 'package:be_chef_proyect/screens/info_recipe_screen.dart';
+export 'package:be_chef_proyect/screens/edit_profile_screen.dart';
