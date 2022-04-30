@@ -26,7 +26,11 @@ class HomeScreen extends StatelessWidget {
               onPressed: (){
                 authProvider.logout();
                 NotificationsService.showSnackBar('Has cerrado sesión en tu cuenta');
-                Navigator.pushReplacementNamed(context, 'login');
+                Navigator.pushReplacement(context, PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const LoginScreen(),
+                  transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+                  transitionDuration: const Duration( milliseconds: 500 ),
+                ));
               },
             ),
           ] ,

@@ -1,3 +1,4 @@
+import 'package:be_chef_proyect/screens/home_screen.dart';
 import 'package:be_chef_proyect/screens/register_screen.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,11 @@ class _LoginForm extends StatelessWidget {
                   if ( user != null ) {
                     dataProfileProvider.username = user.username;
                     dataProfileProvider.description = user.description;
-                    Navigator.of(context).pushReplacementNamed('home');
+                    Navigator.of(context).pushReplacement(PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const HomeScreen(),
+                      transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+                      transitionDuration: const Duration( milliseconds: 500 ),
+                    ));
                   }
                   else{
                     authService.logout();

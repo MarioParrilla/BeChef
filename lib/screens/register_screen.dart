@@ -123,7 +123,11 @@ class _LoginForm extends StatelessWidget {
                 if(createdUser.runtimeType == User) {
                   dataProfileProvider.username = createdUser.username;
                   dataProfileProvider.description = createdUser.description;
-                  Navigator.of(context).popAndPushNamed('home');
+                  Navigator.of(context).pushReplacement(PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const HomeScreen(),
+                      transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+                      transitionDuration: const Duration( milliseconds: 700 ),
+                    ));
                 } else{
                   NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
                   loginForm.isLoading = false;

@@ -13,7 +13,7 @@ class AppData {
       child: Column(
         children: [
           const Text("Actualmente el servidor no esta disponible, por favor intente mas tarde"),
-          TextButton(onPressed:() => SystemChannels.platform.invokeMethod('SystemNavigator.pop'), child: const Text("Aceptar")),
+          TextButton(onPressed:() => SystemChannels.platform.invokeMethod('SystemNavigator.pop'), child: const Text("Aceptar", style: TextStyle(color: Colors.deepOrange),)),
         ],
       ),
     ),
