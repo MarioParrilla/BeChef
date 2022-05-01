@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 class CustomInputField extends StatelessWidget {
 
   final String? labelText;
+  final String? initialValue;
   final String? hintText;
   final String? helperText;
+  final int? maxLines;
+  final int? minLines;
   final IconData? icon;
   final TextInputType? keyboardType;
   final bool isPassword;
@@ -16,10 +19,13 @@ class CustomInputField extends StatelessWidget {
   const CustomInputField({
     Key? key, 
     this.labelText, 
+    this.initialValue, 
     this.hintText, 
     this.helperText, 
     this.icon,
     this.keyboardType, 
+    this.maxLines, 
+    this.minLines, 
     this.isPassword = false, 
     required this.color, 
     required this.validator, 
@@ -29,6 +35,9 @@ class CustomInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      minLines: minLines != null ? minLines : 1,
+      maxLines: maxLines != null ? maxLines : 1,
+      initialValue: initialValue != null ? initialValue : '',
       autocorrect: false,
       keyboardType: keyboardType ?? TextInputType.text,
       obscureText: isPassword,

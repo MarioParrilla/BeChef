@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
             _ProfileHeader(height: height),
             true ? 
                 TextButton(
-                  onPressed: () => { Navigator.of(context).pushNamed('editProfile')}, 
+                  onPressed: () =>  Navigator.of(context).pushNamed('editProfile'),
                   child: Text('Editar Perfil'), 
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -84,9 +84,11 @@ class _ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: false);
+final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: true);
     String username = dataProfileProvider.username.isEmpty ? 'username' : dataProfileProvider.username;
     String description = dataProfileProvider.description.isEmpty ? 'description' : dataProfileProvider.description;
+    String urlImg = dataProfileProvider.urlImg.isEmpty ? 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg' : dataProfileProvider.urlImg;
+
 
     return Container(
       padding: const EdgeInsets.only(top: 20),
@@ -96,9 +98,9 @@ class _ProfileHeader extends StatelessWidget {
 
           Container(
             margin: const EdgeInsets.only(left: 20, right: 20,),
-            child: const CircleAvatar(
+            child: CircleAvatar(
               maxRadius: 50,
-              backgroundImage: NetworkImage('https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg'),
+              backgroundImage: NetworkImage(urlImg),
             ),
           ),
 
@@ -110,7 +112,7 @@ class _ProfileHeader extends StatelessWidget {
               ),
               SizedBox(
                 width: 150,
-                child: Text(description, maxLines: 4, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
+                child: Text(description, maxLines: 5, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
               )),
             ]
           ),
