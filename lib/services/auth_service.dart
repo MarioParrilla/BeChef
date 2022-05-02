@@ -33,7 +33,7 @@ class AuthService extends ChangeNotifier{
       }
 
     } catch (e) {
-      await showDialog(context: context, builder: (_) => AppData.alert);
+      await showDialog(context: context, builder: (_) => AppData.alert(context));
     }
 
   }
@@ -61,7 +61,7 @@ class AuthService extends ChangeNotifier{
       }
 
     } catch (e) {
-      await showDialog(context: context, builder: (_) => AppData.alert);
+      await showDialog(context: context, builder: (_) => AppData.alert(context));
     }
   }
 

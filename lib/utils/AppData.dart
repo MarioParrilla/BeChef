@@ -6,16 +6,20 @@ class AppData {
 
   static get baseUrl => _baseUrl;
 
-    static AlertDialog alert = AlertDialog(
-    title: Text("Error"),
-    content: Container(
-      height: 120,
-      child: Column(
-        children: [
-          const Text("Actualmente el servidor no esta disponible, por favor intente mas tarde"),
-          TextButton(onPressed:() => SystemChannels.platform.invokeMethod('SystemNavigator.pop'), child: const Text("Aceptar", style: TextStyle(color: Colors.deepOrange),)),
-        ],
-      ),
-    ),
-  );
+    static AlertDialog alert (BuildContext context){
+      return AlertDialog(
+        title: Text("Error"),
+        content: Container(
+          height: 140,
+          child: Column(
+            children: [
+              const Text("Actualmente el servidor no esta disponible, por favor intente mas tarde"),
+              TextButton(onPressed:() => SystemChannels.platform.invokeMethod('SystemNavigator.pop'), child: const Text("Aceptar", style: TextStyle(color: Colors.deepOrange),)),
+              TextButton(onPressed:() => Navigator.pushNamedAndRemoveUntil(context,'init',(_) => false), child: const Text("Reintentar", style: TextStyle(color: Colors.deepOrange),)),
+            ],
+          ),
+        ),
+      );
+    }
+
 }

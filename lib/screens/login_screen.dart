@@ -133,6 +133,7 @@ class _LoginForm extends StatelessWidget {
                   if ( user != null ) {
                     dataProfileProvider.username = user.username;
                     dataProfileProvider.description = user.description;
+                    dataProfileProvider.urlImg = user.urlImg;
                     Navigator.of(context).pushReplacement(PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const HomeScreen(),
                       transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),

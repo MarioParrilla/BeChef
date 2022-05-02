@@ -22,7 +22,7 @@ class DataUserLoggedService extends ChangeNotifier{
         return null;
       }
     } catch (e) {
-      await showDialog(context: context, builder: (_) => AppData.alert);
+      await showDialog(context: context, builder: (_) => AppData.alert(context));
     }
   }
 
@@ -49,7 +49,7 @@ class DataUserLoggedService extends ChangeNotifier{
         return response;
       }
     } catch (e) {
-      await showDialog(context: context, builder: (_) => AppData.alert);
+      await showDialog(context: context, builder: (_) => AppData.alert(context));
     }
 
 

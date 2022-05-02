@@ -24,6 +24,8 @@ class InitScreen extends StatelessWidget {
             if ( user != null ) {
               dataProfileProvider.username = user.username;
               dataProfileProvider.description = user.description;
+              dataProfileProvider.urlImg = user.urlImg;
+              
               Navigator.pushReplacement(context, PageRouteBuilder(
                 pageBuilder: (_, __, ___) => const HomeScreen(),
                 transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),

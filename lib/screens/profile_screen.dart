@@ -89,7 +89,6 @@ final dataProfileProvider = Provider.of<DataProfileProvider>(context, listen: tr
     String description = dataProfileProvider.description.isEmpty ? 'description' : dataProfileProvider.description;
     String urlImg = dataProfileProvider.urlImg.isEmpty ? 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg' : dataProfileProvider.urlImg;
 
-
     return Container(
       padding: const EdgeInsets.only(top: 20),
 
