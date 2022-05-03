@@ -10,7 +10,7 @@ class AppData {
       return AlertDialog(
         title: Text("Error"),
         content: Container(
-          height: 140,
+          height: 160,
           child: Column(
             children: [
               const Text("Actualmente el servidor no esta disponible, por favor intente mas tarde"),
