@@ -22,13 +22,11 @@ class DataProfileProvider extends ChangeNotifier {
   bool get urlImgChanged => _urlImgChanged;
 
   set username (String value){
-    print('cambio nombre');
     _username = value;
     notifyListeners();
   }
 
   set description (String value){
-        print('cambio desc');
     _description = value;
     notifyListeners();
   }
@@ -40,7 +38,6 @@ class DataProfileProvider extends ChangeNotifier {
   }
 
   set urlImgTemp (String value){
-      print('cambio img');
     _urlImgTemp = value;
     notifyListeners();
   }

@@ -37,11 +37,11 @@ class EditProfileScreen extends StatelessWidget {
 
       if(newUser.runtimeType == User) {
         if(newImg == null){
-          dataProfileProvider!.username = newUser.username;
-          dataProfileProvider!.description = newUser.description;
+          dataProfileProvider!.username = newUser.username == '' ? oldUsername : newUser.username;
+          dataProfileProvider!.description = newUser.description == '' ? oldDescription : newUser.description;
         }else{
-          dataProfileProvider!.username = newUser.username;
-          dataProfileProvider!.description = newUser.description;
+          dataProfileProvider!.username = newUser.username == '' ? oldUsername : newUser.username;
+          dataProfileProvider!.description = newUser.description == '' ? oldDescription : newUser.description;
           dataProfileProvider!.urlImg = newUser.urlImg;
         }
 
