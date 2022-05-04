@@ -1,5 +1,7 @@
 
 
+import 'package:be_chef_proyect/models/models.dart';
+import 'package:be_chef_proyect/services/recipe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +12,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recipeService = Provider.of<RecipeService>(context, listen: true);
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -41,24 +44,63 @@ class ProfileScreen extends StatelessWidget {
             // ignore: dead_code
             true ? const Text('Tus Recetas', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)) : const Text('Sus Recetas', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox( height: 5),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                  children: const [
-                    
-                    SizedBox( height: 10),
-                    _RecipeCard(urlImageRecipe: 'https://cdn.colombia.com/gastronomia/2011/08/25/macarrones-a-la-mediterranea-3327.jpg'),
-                    SizedBox( height: 10),
-                    
-                    _RecipeCard(urlImageRecipe: 'https://static2.abc.es/media/bienestar/2021/09/27/tipos-de-carne-1-kWj--620x349@abc.jpg'),
-                    SizedBox( height: 10),
-      
-                    _RecipeCard(urlImageRecipe: 'https://images.ecestaticos.com/lD5P5Laq4xFzLo3B9J02zB_GDng=/92x95:1837x1406/1200x899/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F8d6%2Fb2c%2F174%2F8d6b2c1744497538097bdf0bd5dd2c5a.jpg'),
-                    SizedBox( height: 10),
-      
-                  ]
-                )
-              ),
+
+            FutureBuilder(
+              future: recipeService.loadRecipesUserLogged(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Recipe>? recipes = snapshot.data as List<Recipe>?;
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: recipes!.length == 0 ? 1 : recipes.length,
+                      itemBuilder: (context, index) {
+                        if (recipes.isEmpty) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              SizedBox( height: 50),
+                              Icon(Icons.no_food, color: Colors.deepOrange, size: 100),
+                              Text('No hay recetas', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                            ],
+                          );
+                        }else{
+                          return ListTile(
+                            title: _RecipeCard(recipe: recipes[index]),
+                          );
+                        }
+                      },
+                    ),
+                  );
+                }
+                else if(snapshot.hasError){
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SizedBox( height: 50),
+                      Icon(Icons.error_outline, color: Colors.deepOrange, size: 100),
+                      Text('Se produjo un error', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                    ],
+                  );
+                }else{
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SizedBox( height: 50),
+                      CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.deepOrange,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                      ),
+                      SizedBox( height: 10),
+                      Text('Cargando recetas...', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                    ],
+                  );
+                }
+              }
+            )
+
           ],
         ),
       ),
@@ -124,9 +166,12 @@ class _ProfileHeader extends StatelessWidget {
 
 
 class _RecipeCard extends StatelessWidget {
-  final String urlImageRecipe;
+  final Recipe recipe;
+
   
-  const _RecipeCard({Key? key, required this.urlImageRecipe, }) : super(key: key);
+  const _RecipeCard({Key? key, 
+    required this.recipe, 
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -151,7 +196,7 @@ class _RecipeCard extends StatelessWidget {
                 child: Container(
                   child: FadeInImage(
                     placeholder: const AssetImage('assets/bechef_logo.png'), 
-                    image: NetworkImage(urlImageRecipe),
+                    image: NetworkImage(recipe.urlImg ?? 'https://static.thenounproject.com/png/380306-200.png'),
                     width: 150,
                     height: 150,
                     fit: BoxFit.cover,
@@ -170,10 +215,10 @@ class _RecipeCard extends StatelessWidget {
     
                       Container(
                         margin: const EdgeInsets.only(top: 10),
-                        child: const Text('Recipe Name', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        child: Text(recipe.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       )),
-                      const Flexible(
-                        child: Text('Et veniam eiusmod reprehenderit officia Lorem commodo et adipisicing ipsum magna incididunt.', maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
+                      Flexible(
+                        child: Text(recipe.description , maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
                       )),
     
                     ]
