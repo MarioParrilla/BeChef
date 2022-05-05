@@ -21,6 +21,8 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DataProfileProvider()),
         ChangeNotifierProvider(create: (_) => LoggedUserRecipesProvider()),
         ChangeNotifierProvider(create: (_) => DataUserLoggedService()),
+        ChangeNotifierProvider(create: (_) => DataUserLoggedService()),
+        ChangeNotifierProvider(create: (_) => RecipeProvider()),
       ],
       child: const BeChefApp(),
     );
@@ -47,7 +49,6 @@ class BeChefApp extends StatelessWidget {
         'home': ( _ ) => const HomeScreen(),
         'login': ( _ ) => const LoginScreen(),
         'register': ( _ ) => const RegisterScreen(),
-        'recipe': ( _ ) => const RecipeScreen(),
         'infoRecipe': ( _ ) => const InfoRecipeScreen(),
         'editProfile': ( _ ) => const EditProfileScreen(),
       },

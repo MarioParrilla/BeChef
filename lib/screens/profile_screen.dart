@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/providers.dart';
+import 'screens.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({ Key? key }) : super(key: key);
@@ -177,7 +178,9 @@ class _RecipeCard extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed('recipe'),
+      onTap: () => Navigator.push(context, PageRouteBuilder(
+        pageBuilder: (_, __, ___) => RecipeScreen(recipe: recipe),
+      )),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: Container(

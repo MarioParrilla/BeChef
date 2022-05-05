@@ -34,7 +34,7 @@ class EditProfileScreen extends StatelessWidget {
 
     if(dataProfileProvider!.usernameChanged || dataProfileProvider!.descriptionChanged || dataProfileProvider!.urlImgChanged) {
       dynamic newUser = await dataUserLoggedService.changeBasicDataUser(context, newUsername, newDescription, newImg);
-
+      
       if(newUser.runtimeType == User) {
         if(newImg == null){
           dataProfileProvider!.username = newUser.username == '' ? oldUsername : newUser.username;

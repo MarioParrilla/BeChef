@@ -1,12 +1,49 @@
+import 'dart:io';
+
 import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/models.dart';
+import '../providers/providers.dart';
+import '../services/services.dart';
 
 class RecipeScreen extends StatelessWidget {
 
-  const RecipeScreen({Key? key}) : super(key: key);
+  final Recipe recipe;
+  static Recipe? sRecipe;
+  static File? newImg = null;
+  static RecipeProvider? recipeProvider;
+  
+  const RecipeScreen({Key? key, required this.recipe}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    recipeProvider = Provider.of<RecipeProvider>(context, listen: true);
+    final recipeService = Provider.of<RecipeService>(context, listen: false);
+
+    sRecipe = recipe;
+
+    Future<void> modifyRecipe() async {
+    if(recipeProvider!.nameChanged || recipeProvider!.descriptionChanged || recipeProvider!.stepsChanged || recipeProvider!.categoryChanged || recipeProvider!.urlImgChanged) {
+      dynamic newRecipe = await recipeService.changeDataRecipe(context, recipe.id.toString(), sRecipe!.name, sRecipe!.description, sRecipe!.steps, sRecipe!.category, newImg);
+      
+      if(newRecipe.runtimeType == Recipe) {
+        recipeProvider!.nameChanged = false;
+        recipeProvider!.descriptionChanged = false;
+        recipeProvider!.stepsChanged = false;
+        recipeProvider!.categoryChanged = false;
+        recipeProvider!.urlImgChanged = false;
+
+        Navigator.of(context).pop();
+      }else{
+        NotificationsService.showSnackBar(newRecipe['error']);
+      }
+    }else 
+      Navigator.of(context).pop();
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white12,
@@ -19,7 +56,7 @@ class RecipeScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                const _ImageOfCard(),
+                const _ImageOfCard(imgUrl: ''),
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.17,
                   left: MediaQuery.of(context).size.width * 0.41,
@@ -27,7 +64,7 @@ class RecipeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const _FormRecipe(),
+            _FormRecipe(recipe: recipe),
           ],
         ),
       ),
@@ -35,7 +72,7 @@ class RecipeScreen extends StatelessWidget {
         child: const Icon(Icons.save_rounded),
         backgroundColor: Colors.deepOrange,
         onPressed: () => {
-          Navigator.of(context).pop()
+          modifyRecipe()
         },
       )
     );
@@ -45,7 +82,9 @@ class RecipeScreen extends StatelessWidget {
 
 class _ImageOfCard extends StatelessWidget {
 
-  const _ImageOfCard({Key? key}) : super(key: key);
+  final String imgUrl;
+  
+  const _ImageOfCard({Key? key, required this.imgUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,18 +114,41 @@ class _ImageOfCard extends StatelessWidget {
 
 class _FormRecipe extends StatelessWidget {
 
-  const _FormRecipe({Key? key}) : super(key: key);
+  final Recipe recipe;
+  
+  const _FormRecipe({Key? key, required this.recipe}) : super(key: key);
+
+  nameChanged(String value){
+    RecipeScreen.sRecipe!.name = value;
+    RecipeScreen.recipeProvider!.nameChanged = true;
+  }
+
+  dscChanged(String value){
+    RecipeScreen.sRecipe!.description = value;
+    RecipeScreen.recipeProvider!.descriptionChanged = true;
+  }
+
+  stepsChanged(String value){
+    RecipeScreen.sRecipe!.steps = value;
+    RecipeScreen.recipeProvider!.stepsChanged = true;
+  }
+
+  categoryChanged(String value){
+    RecipeScreen.sRecipe!.category = value;
+    RecipeScreen.recipeProvider!.categoryChanged = true;
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
         child: Column(
           children: [
-            CustomInputField(color: Colors.deepOrange, labelText: 'Nombre', hintText: 'Pizza Carbonara', validator: (){}, onChange: (){},),
-            CustomInputField(color: Colors.deepOrange, labelText: 'Descripción', hintText: 'Es una receta proveniente de Italia...', validator: (){}, onChange: (){}, ),
-            CustomInputField(color: Colors.deepOrange, labelText: 'Pasos a seguir', hintText: '1.Primero deberemos...', validator: (){}, onChange: (){}, ),
+            CustomInputField(color: Colors.deepOrange, labelText: 'Nombre', initialValue: recipe.name, hintText: 'Pizza Carbonara', validator: ( String value ) => value.length > 3 && value.length < 51 ? null : 'Debe tener entre 4 y 50 caracteres', onChange: (String value) => nameChanged(value)),
+            CustomInputField(color: Colors.deepOrange, labelText: 'Descripción', initialValue: recipe.description , hintText: 'Es una receta proveniente de Italia...', validator: ( String value ) => value.length < 101 ? null : 'Debe tener menos de 100 caracteres', onChange: (String value) => dscChanged(value)),
+            CustomInputField(color: Colors.deepOrange, labelText: 'Pasos a seguir', initialValue: recipe.steps,  hintText: '1.Primero deberemos...', validator: ( String value ) =>  value.length < 21 ? null : 'Debe tener menos de 20 caracteres', onChange: (String value) => stepsChanged(value)),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(
                 labelText: 'Categoría',
@@ -99,12 +161,13 @@ class _FormRecipe extends StatelessWidget {
                 ),
               ),
               items: const [
-                DropdownMenuItem(value: 'Pastas', child: Text('Pastas')),
-                DropdownMenuItem(value: 'Pizzas', child: Text('Pizzas')),
-                DropdownMenuItem(value: 'Ensaladas', child: Text('Ensaladas')),
+                DropdownMenuItem(value: 'Pasta', child: Text('Pastas')),
+                DropdownMenuItem(value: 'Pizza', child: Text('Pizzas')),
+                DropdownMenuItem(value: 'Ensalada', child: Text('Ensaladas')),
                 DropdownMenuItem(value: 'Otros', child: Text('Otros')),
-              ], 
-              onChanged: ( value ){}
+              ],
+              value: recipe.category,
+              onChanged: ( value ) => categoryChanged(value!),
             )
           ],
         )

@@ -43,8 +43,7 @@ class DataUserLoggedService extends ChangeNotifier{
       }else{
         response = await _changeWithImg(authData, img);
       }
-
-      if (response.containsKey('username')) {
+          if (response.containsKey('username')) {
         return User.fromMap(response);
       }else{
         return response;

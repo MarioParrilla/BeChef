@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/providers/providers.dart';
@@ -41,7 +42,64 @@ class RecipeService extends ChangeNotifier{
     return recipes;
   }
 
+  Future changeDataRecipe(BuildContext context, String id,String name, String description,String steps , String category, File? img) async {
 
+    final String? token = await storage.read(key: 'token');   
+    dynamic response;
+    try {
+
+        Map<String, String> authData = {
+          'token': token!,
+          'id': id,
+          'name': name,
+          'description': description,
+          'steps': steps,
+          'category': category,
+        }; 
+      if(img == null){
+        response = await _changeWithoutImg(authData);
+      }else{
+        response = await _changeWithImg(authData, img);
+      }
+          if (response.containsKey('name')) {
+        return Recipe.fromMap(response);
+      }else{
+        return response;
+      }
+    } catch (e) {
+      print(e);
+      await showDialog(context: context, builder: (_) => AppData.alert(context));
+    }
+
+  }
+
+    Future<Map<String, dynamic>> _changeWithoutImg(Map<String, String> authData) async {
+
+    final String? token = await storage.read(key: 'token');
+    final url = Uri.http(AppData.baseUrl, '/api/recipes/');
+
+    final request = http.MultipartRequest('PUT', url);
+    request.fields.addAll(authData);
+    final streamResponse = await request.send();
+    final resp = await http.Response.fromStream(streamResponse).timeout(const Duration(seconds: 15));
+
+    return json.decode(resp.body);
+  }
+
+  Future<Map<String, dynamic>> _changeWithImg(Map<String, String> authData, File img) async {
+
+    final String? token = await storage.read(key: 'token');
+      
+    final url = Uri.http(AppData.baseUrl, '/api/recipes/');
+
+      final request = http.MultipartRequest('PUT', url);
+      request.files.add(await http.MultipartFile.fromPath('img', img.path));
+      request.fields.addAll(authData);
+      final streamResponse = await request.send();
+      final resp = await http.Response.fromStream(streamResponse).timeout(const Duration(seconds: 15));
+      
+      return json.decode(resp.body);
+  }
 
 
 }
