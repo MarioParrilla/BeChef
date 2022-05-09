@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
@@ -13,21 +14,42 @@ class RecipeScreen extends StatelessWidget {
   final Recipe recipe;
   static Recipe? sRecipe;
   static File? newImg = null;
+  static String newUrlImg = '';
   static RecipeProvider? recipeProvider;
+  final bool type;
   
-  const RecipeScreen({Key? key, required this.recipe}) : super(key: key);
+  const RecipeScreen({Key? key, required this.recipe, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     recipeProvider = Provider.of<RecipeProvider>(context, listen: true);
     final recipeService = Provider.of<RecipeService>(context, listen: false);
 
     sRecipe = recipe;
+    newUrlImg = recipeProvider!.urlImg;
 
     Future<void> modifyRecipe() async {
     if(recipeProvider!.nameChanged || recipeProvider!.descriptionChanged || recipeProvider!.stepsChanged || recipeProvider!.categoryChanged || recipeProvider!.urlImgChanged) {
-      dynamic newRecipe = await recipeService.changeDataRecipe(context, recipe.id.toString(), sRecipe!.name, sRecipe!.description, sRecipe!.steps, sRecipe!.category, newImg);
+      dynamic newRecipe = await recipeService.changeDataRecipe(context, recipe.id.toString(), sRecipe!.name!, sRecipe!.description!, sRecipe!.steps!, sRecipe!.category!, newImg);
+      
+      if(newRecipe.runtimeType == Recipe) {
+        recipeProvider!.nameChanged = false;
+        recipeProvider!.descriptionChanged = false;
+        recipeProvider!.stepsChanged = false;
+        recipeProvider!.categoryChanged = false;
+        recipeProvider!.urlImgChanged = false;
+
+        Navigator.of(context).pop();
+      }else{
+        NotificationsService.showSnackBar(newRecipe['error']);
+      }
+    }else 
+      Navigator.of(context).pop();
+    }
+
+    Future<void> createRecipe() async {
+    if(recipeProvider!.nameChanged || recipeProvider!.descriptionChanged || recipeProvider!.stepsChanged || recipeProvider!.categoryChanged || recipeProvider!.urlImgChanged) {
+      dynamic newRecipe = await recipeService.changeDataRecipe(context, null, sRecipe!.name!, sRecipe!.description!, sRecipe!.steps!, sRecipe!.category!, newImg);
       
       if(newRecipe.runtimeType == Recipe) {
         recipeProvider!.nameChanged = false;
@@ -56,7 +78,7 @@ class RecipeScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                const _ImageOfCard(imgUrl: ''),
+                _ImageOfCard(urlImg: newUrlImg),
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.17,
                   left: MediaQuery.of(context).size.width * 0.41,
@@ -72,7 +94,7 @@ class RecipeScreen extends StatelessWidget {
         child: const Icon(Icons.save_rounded),
         backgroundColor: Colors.deepOrange,
         onPressed: () => {
-          modifyRecipe()
+          type ? modifyRecipe() : createRecipe()
         },
       )
     );
@@ -81,15 +103,76 @@ class RecipeScreen extends StatelessWidget {
 
 
 class _ImageOfCard extends StatelessWidget {
-
-  final String imgUrl;
+  String urlImg;
   
-  const _ImageOfCard({Key? key, required this.imgUrl}) : super(key: key);
+  _ImageOfCard({Key? key, required this.urlImg}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final ImagePicker imagePicker = ImagePicker();
+    PickedFile? pickedFile;
+
+    takeGalleryImg() async {
+          pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+          if(pickedFile != null) {
+            RecipeScreen.newImg = File(pickedFile!.path);  
+            RecipeScreen.recipeProvider!.urlImg = pickedFile!.path;
+            urlImg = pickedFile!.path;
+            RecipeScreen.recipeProvider!.urlImgChanged = true;
+            Navigator.of(context).pop();
+          }
+        }
+
+        takeCameraImg() async {
+          pickedFile = await imagePicker.getImage(source: ImageSource.camera);
+          if(pickedFile != null) {
+            RecipeScreen.newImg = File(pickedFile!.path);  
+            RecipeScreen.recipeProvider!.urlImg = pickedFile!.path;
+            urlImg = pickedFile!.path;
+            RecipeScreen.recipeProvider!.urlImgChanged = true;
+            Navigator.of(context).pop();
+          }
+        }
+
+        AlertDialog alert (BuildContext context){
+          
+          return AlertDialog(
+            title: Text("¿Como quieres elegir la imagen?"),
+            content: Container(
+              height: 140,
+              child: Column(
+                children: [
+                  const Text("Elige el metodo para escoger la imagen"),
+                  TextButton(onPressed:() async => {
+                    takeCameraImg()
+                  }, child: const Text("Camara", style: TextStyle(color: Colors.deepOrange),)),
+                  
+                  TextButton(onPressed:() async => {
+                    takeGalleryImg()
+                  }, child: const Text("Galeria", style: TextStyle(color: Colors.deepOrange),)),
+                ],
+              ),
+            ),
+          );
+        }
+    
+      ImageProvider getImage(String? img){
+        if(img == null || img == '') {
+          return AssetImage('assets/bechef_logo.png');
+        }
+
+        if(img.startsWith('http')) {
+          return NetworkImage(img);
+        }
+
+        return FileImage(File(img));
+      }
+
     return GestureDetector(
-      onTap: (){},
+      onTap: () async {
+        showDialog(context: context, builder: (context) => alert(context));
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
@@ -98,23 +181,18 @@ class _ImageOfCard extends StatelessWidget {
             color: Colors.deepOrange,
             height: 250,
             width: double.infinity,
-            child: const FadeInImage(
-              placeholder: AssetImage('/assets/bechef_logo.png'), 
-              image: AssetImage('assets/bechef_logo.png'),
-              width: 150,
-              height: 150,
+            child: Image(
+              image: getImage(urlImg),
               fit: BoxFit.cover,
-            )
           ),
         ),
-      ),
-    );
+      )));
   }
 }
 
 class _FormRecipe extends StatelessWidget {
 
-  final Recipe recipe;
+  final Recipe? recipe;
   
   const _FormRecipe({Key? key, required this.recipe}) : super(key: key);
 
@@ -146,9 +224,9 @@ class _FormRecipe extends StatelessWidget {
       child: Form(
         child: Column(
           children: [
-            CustomInputField(color: Colors.deepOrange, labelText: 'Nombre', initialValue: recipe.name, hintText: 'Pizza Carbonara', validator: ( String value ) => value.length > 3 && value.length < 51 ? null : 'Debe tener entre 4 y 50 caracteres', onChange: (String value) => nameChanged(value)),
-            CustomInputField(color: Colors.deepOrange, labelText: 'Descripción', initialValue: recipe.description , hintText: 'Es una receta proveniente de Italia...', validator: ( String value ) => value.length < 101 ? null : 'Debe tener menos de 100 caracteres', onChange: (String value) => dscChanged(value)),
-            CustomInputField(color: Colors.deepOrange, labelText: 'Pasos a seguir', initialValue: recipe.steps,  hintText: '1.Primero deberemos...', validator: ( String value ) =>  value.length < 21 ? null : 'Debe tener menos de 20 caracteres', onChange: (String value) => stepsChanged(value)),
+            CustomInputField(color: Colors.deepOrange, labelText: 'Nombre', initialValue: recipe != null ? recipe!.name : '', hintText: 'Pizza Carbonara', validator: ( String value ) => value.length > 3 && value.length < 51 ? null : 'Debe tener entre 4 y 50 caracteres', onChange: (String value) => nameChanged(value)),
+            CustomInputField(color: Colors.deepOrange, labelText: 'Descripción', initialValue: recipe != null ? recipe!.description : '', hintText: 'Es una receta proveniente de Italia...', validator: ( String value ) => value.length < 101 ? null : 'Debe tener menos de 100 caracteres', onChange: (String value) => dscChanged(value)),
+            CustomInputField(color: Colors.deepOrange, labelText: 'Pasos a seguir', initialValue: recipe != null ? recipe!.steps : '',  hintText: '1.Primero deberemos...', validator: ( String value ) =>  value.length < 21 ? null : 'Debe tener menos de 20 caracteres', onChange: (String value) => stepsChanged(value)),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(
                 labelText: 'Categoría',
@@ -166,7 +244,7 @@ class _FormRecipe extends StatelessWidget {
                 DropdownMenuItem(value: 'Ensalada', child: Text('Ensaladas')),
                 DropdownMenuItem(value: 'Otros', child: Text('Otros')),
               ],
-              value: recipe.category,
+              value: recipe != null ? recipe!.category : null,
               onChanged: ( value ) => categoryChanged(value!),
             )
           ],

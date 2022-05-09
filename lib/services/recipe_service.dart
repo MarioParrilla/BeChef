@@ -42,7 +42,7 @@ class RecipeService extends ChangeNotifier{
     return recipes;
   }
 
-  Future changeDataRecipe(BuildContext context, String id,String name, String description,String steps , String category, File? img) async {
+  Future changeDataRecipe(BuildContext context, String? id,String name, String description,String steps , String category, File? img) async {
 
     final String? token = await storage.read(key: 'token');   
     dynamic response;
@@ -50,7 +50,7 @@ class RecipeService extends ChangeNotifier{
 
         Map<String, String> authData = {
           'token': token!,
-          'id': id,
+          if(id != null) 'id': id,
           'name': name,
           'description': description,
           'steps': steps,

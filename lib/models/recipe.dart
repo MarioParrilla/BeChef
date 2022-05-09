@@ -3,21 +3,21 @@ import 'dart:convert';
 
 class Recipe {
     Recipe({
-        required this.id,
-        required this.idAutor,
-        required this.name,
-        required this.description,
-        required this.category,
-        required this.steps,
+        this.id,
+        this.idAutor,
+        this.name,
+        this.description,
+        this.category,
+        this.steps,
         this.urlImg,
     });
 
-    int id;
-    int idAutor;
-    String name;
-    String description;
-    String category;
-    String steps;
+    int? id;
+    int? idAutor;
+    String? name;
+    String? description;
+    String? category;
+    String? steps;
     String? urlImg;
 
     factory Recipe.fromJson(String str) => Recipe.fromMap(json.decode(str));

@@ -110,7 +110,9 @@ class ProfileScreen extends StatelessWidget {
       ? FloatingActionButton(
         child: const Icon(Icons.add),
         backgroundColor: Colors.deepOrange,
-        onPressed: () => Navigator.of(context).pushNamed('recipe'),
+        onPressed: () => Navigator.push(context, PageRouteBuilder(
+        pageBuilder: (_, __, ___) => RecipeScreen(recipe: Recipe(), type: false),
+      )),
       )
       // ignore: dead_code
       : null,
@@ -179,7 +181,7 @@ class _RecipeCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => Navigator.push(context, PageRouteBuilder(
-        pageBuilder: (_, __, ___) => RecipeScreen(recipe: recipe),
+        pageBuilder: (_, __, ___) => RecipeScreen(recipe: recipe, type: true),
       )),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -218,10 +220,10 @@ class _RecipeCard extends StatelessWidget {
     
                       Container(
                         margin: const EdgeInsets.only(top: 10),
-                        child: Text(recipe.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        child: Text(recipe.name!, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       )),
                       Flexible(
-                        child: Text(recipe.description , maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
+                        child: Text(recipe.description! , maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
                       )),
     
                     ]
