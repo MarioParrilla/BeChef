@@ -9,7 +9,6 @@ Future<void> main() async {
 }
 
 class AppState extends StatelessWidget {
-
   const AppState({Key? key}) : super(key: key);
 
   @override
@@ -30,13 +29,10 @@ class AppState extends StatelessWidget {
 }
 
 class BeChefApp extends StatelessWidget {
-
   const BeChefApp({Key? key}) : super(key: key);
 
-  static Route<dynamic> onGenerateRoute(RouteSettings settings){
-    return MaterialPageRoute(
-      builder: (context) => const InitScreen()
-    );
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    return MaterialPageRoute(builder: (context) => const InitScreen());
   }
 
   @override
@@ -45,12 +41,11 @@ class BeChefApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: 'init',
       routes: {
-        'init': ( _ ) => const InitScreen(),
-        'home': ( _ ) => const HomeScreen(),
-        'login': ( _ ) => const LoginScreen(),
-        'register': ( _ ) => const RegisterScreen(),
-        'infoRecipe': ( _ ) => const InfoRecipeScreen(),
-        'editProfile': ( _ ) => const EditProfileScreen(),
+        'init': (_) => const InitScreen(),
+        'home': (_) => const HomeScreen(),
+        'login': (_) => const LoginScreen(),
+        'register': (_) => const RegisterScreen(),
+        'editProfile': (_) => const EditProfileScreen(),
       },
       onGenerateRoute: (settings) => onGenerateRoute(settings),
       scaffoldMessengerKey: NotificationsService.messagerKey,

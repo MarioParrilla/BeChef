@@ -78,7 +78,7 @@ class RecipeScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                _ImageOfCard(urlImg: newUrlImg),
+                _ImageOfCard(urlImg: newUrlImg.isEmpty && recipe.urlImg != null ? recipe.urlImg! : newUrlImg),
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.17,
                   left: MediaQuery.of(context).size.width * 0.41,
@@ -239,9 +239,9 @@ class _FormRecipe extends StatelessWidget {
                 ),
               ),
               items: const [
-                DropdownMenuItem(value: 'Pasta', child: Text('Pastas')),
-                DropdownMenuItem(value: 'Pizza', child: Text('Pizzas')),
-                DropdownMenuItem(value: 'Ensalada', child: Text('Ensaladas')),
+                DropdownMenuItem(value: 'Pastas', child: Text('Pastas')),
+                DropdownMenuItem(value: 'Pizzas', child: Text('Pizzas')),
+                DropdownMenuItem(value: 'Ensaladas', child: Text('Ensaladas')),
                 DropdownMenuItem(value: 'Otros', child: Text('Otros')),
               ],
               value: recipe != null ? recipe!.category : null,

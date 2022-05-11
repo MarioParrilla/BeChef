@@ -202,7 +202,7 @@ class _RecipeCard extends StatelessWidget {
                   child: FadeInImage(
                     placeholder: const AssetImage('assets/bechef_logo.png'), 
                     image: NetworkImage(recipe.urlImg ?? 'https://static.thenounproject.com/png/380306-200.png'),
-                    width: 150,
+                    width: 100,
                     height: 150,
                     fit: BoxFit.cover,
                   )
@@ -220,7 +220,7 @@ class _RecipeCard extends StatelessWidget {
     
                       Container(
                         margin: const EdgeInsets.only(top: 10),
-                        child: Text(recipe.name!, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        child: Text(recipe.name!, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, ),
                       )),
                       Flexible(
                         child: Text(recipe.description! , maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, ),
