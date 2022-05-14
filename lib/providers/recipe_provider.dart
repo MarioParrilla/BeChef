@@ -55,7 +55,6 @@ class RecipeProvider extends ChangeNotifier {
   }
 
   set urlImg(String value) {
-    print(value);
     _urlImg = value;
     _urlImgTemp = value;
     notifyListeners();

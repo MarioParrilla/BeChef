@@ -8,7 +8,6 @@ class LoggedUserRecipesProvider extends ChangeNotifier {
   List<Recipe> get recipes => _recipes;
 
   set recipes(List<Recipe> value) {
-    print(value.length);
     _recipes = value;
     notifyListeners();
   }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:be_chef_proyect/providers//providers.dart';
 
+import 'providers/list_category_provider.dart';
+
 Future<void> main() async {
   runApp(const AppState());
 }
@@ -22,6 +24,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DataUserLoggedService()),
         ChangeNotifierProvider(create: (_) => DataUserLoggedService()),
         ChangeNotifierProvider(create: (_) => RecipeProvider()),
+        ChangeNotifierProvider(create: (_) => ListCategoryProvider()),
       ],
       child: const BeChefApp(),
     );

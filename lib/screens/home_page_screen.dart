@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:be_chef_proyect/screens/info_recipe_screen.dart';
+import 'package:be_chef_proyect/screens/recipes_by_category_screen.dart';
 import 'package:be_chef_proyect/services/recipe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -109,24 +110,35 @@ class _HorizontalRecipes extends StatelessWidget {
                                   Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            category,
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
+                                      child: GestureDetector(
+                                        onTap: () => {
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (_, __, ___) =>
+                                                    RecipesByCategoryPageScreen(
+                                                        category),
+                                              )),
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              category,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 3, top: 3),
-                                              child: const Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_outlined,
-                                                  size: 15,
-                                                  color: Colors.black)),
-                                        ],
+                                            Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 3, top: 3),
+                                                child: const Icon(
+                                                    Icons
+                                                        .arrow_forward_ios_outlined,
+                                                    size: 15,
+                                                    color: Colors.black)),
+                                          ],
+                                        ),
                                       )),
                                   const SizedBox(height: 5),
                                   Expanded(
