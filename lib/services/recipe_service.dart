@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/providers/providers.dart';
+import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +33,7 @@ class RecipeService extends ChangeNotifier {
       await showDialog(
           context: context, builder: (_) => AppData.alert(context));
     }
-    await Future.delayed(const Duration(seconds: 3));
+    //await Future.delayed(const Duration(seconds: 3));
     return recipes;
   }
 
@@ -51,7 +52,7 @@ class RecipeService extends ChangeNotifier {
       await showDialog(
           context: context, builder: (_) => AppData.alert(context));
     }
-    await Future.delayed(const Duration(seconds: 3));
+    //await Future.delayed(const Duration(seconds: 3));
     return recipes;
   }
 
@@ -140,5 +141,26 @@ class RecipeService extends ChangeNotifier {
         .timeout(const Duration(seconds: 15));
 
     return json.decode(resp.body);
+  }
+
+  Future removeRecipe(BuildContext context, int id) async {
+    final url = Uri.http(AppData.baseUrl, '/api/recipes/${id}');
+    try {
+      final request =
+          await http.delete(url).timeout(const Duration(seconds: 15));
+      final response = json.decode(request.body);
+      print(response.runtimeType);
+      if (response != true) {
+        NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+      await showDialog(
+          context: context, builder: (_) => AppData.alert(context));
+      return false;
+    }
   }
 }

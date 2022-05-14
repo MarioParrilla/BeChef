@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class RecipeProvider extends ChangeNotifier {
-
   String _id = '';
   String _name = '';
   String _description = '';
@@ -15,7 +14,6 @@ class RecipeProvider extends ChangeNotifier {
   bool _stepsChanged = false;
   bool _categoryChanged = false;
   bool _urlImgChanged = false;
-
 
   String get id => _id;
   String get name => _name;
@@ -31,66 +29,65 @@ class RecipeProvider extends ChangeNotifier {
   bool get categoryChanged => _categoryChanged;
   bool get urlImgChanged => _urlImgChanged;
 
-  set id (String value){
+  set id(String value) {
     _id = value;
     notifyListeners();
   }
 
-  set name (String value){
+  set name(String value) {
     _name = value;
     notifyListeners();
   }
 
-  set description (String value){
+  set description(String value) {
     _description = value;
     notifyListeners();
   }
 
-  set steps (String value){
+  set steps(String value) {
     _steps = value;
     notifyListeners();
   }
 
-  set category (String value){
+  set category(String value) {
     _category = value;
     notifyListeners();
   }
 
-  set urlImg (String value){
+  set urlImg(String value) {
     print(value);
     _urlImg = value;
     _urlImgTemp = value;
     notifyListeners();
   }
 
-  set urlImgTemp (String value){
+  set urlImgTemp(String value) {
     _urlImgTemp = value;
     notifyListeners();
   }
 
-
-  set nameChanged (bool value){
+  set nameChanged(bool value) {
     _nameChanged = value;
     notifyListeners();
   }
 
-  set descriptionChanged (bool value){
+  set descriptionChanged(bool value) {
     _descriptionChanged = value;
     notifyListeners();
   }
 
-  set stepsChanged (bool value){
+  set stepsChanged(bool value) {
     _stepsChanged = value;
     notifyListeners();
   }
 
-  set categoryChanged (bool value){
+  set categoryChanged(bool value) {
     _categoryChanged = value;
     notifyListeners();
   }
 
-  set urlImgChanged (bool value){
+  set urlImgChanged(bool value) {
     _urlImgChanged = value;
     notifyListeners();
-  }  
+  }
 }
