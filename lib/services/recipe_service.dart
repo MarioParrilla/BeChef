@@ -112,6 +112,29 @@ class RecipeService extends ChangeNotifier {
     return recipes;
   }
 
+  Future<List<Recipe>> loadRecipesExternalUser(
+      BuildContext context, int userID) async {
+    List<Recipe> recipes = [];
+
+    final url = Uri.http(AppData.baseUrl, '/api/recipes/user/${userID}');
+
+    try {
+      final request = await http.get(url).timeout(const Duration(seconds: 15));
+      final response = json.decode(request.body);
+
+      response.forEach((value) {
+        final temp = Recipe.fromMap(value);
+        recipes.add(temp);
+      });
+    } catch (e) {
+      print(e);
+      await showDialog(
+          context: context, builder: (_) => AppData.alert(context));
+    }
+    //await Future.delayed(const Duration(seconds: 3));
+    return recipes;
+  }
+
   Future changeDataRecipe(BuildContext context, String? id, String name,
       String description, String steps, String category, File? img) async {
     final String? token = await storage.read(key: 'token');

@@ -26,6 +26,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RecipeProvider()),
         ChangeNotifierProvider(create: (_) => ListCategoryProvider()),
         ChangeNotifierProvider(create: (_) => CategoryService()),
+        ChangeNotifierProvider(create: (_) => UserService()),
       ],
       child: const BeChefApp(),
     );

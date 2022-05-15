@@ -1,4 +1,6 @@
 import 'package:be_chef_proyect/models/models.dart';
+import 'package:be_chef_proyect/screens/external_profile.dart';
+import 'package:be_chef_proyect/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -93,7 +95,17 @@ class _FormRecipe extends StatelessWidget {
                   const Text('Autor',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Text(snapshot.data.toString()),
+                  GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) =>
+                                ExternalProfile(userID: recipe!.idAutor!),
+                          )),
+                      child: Text(snapshot.data.toString(),
+                          style: const TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.deepOrange))),
                   const SizedBox(height: 10),
                   const Text('Nombre Receta',
                       style:
