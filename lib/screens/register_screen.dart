@@ -154,7 +154,8 @@ class _LoginForm extends StatelessWidget {
                             dataProfileProvider.username = createdUser.username;
                             dataProfileProvider.description =
                                 createdUser.description;
-                            dataProfileProvider.urlImg = createdUser.urlImg;
+                            dataProfileProvider.urlImg =
+                                createdUser.urlImg ?? '';
                             Navigator.of(context)
                                 .pushReplacement(PageRouteBuilder(
                               pageBuilder: (_, __, ___) => const HomeScreen(),

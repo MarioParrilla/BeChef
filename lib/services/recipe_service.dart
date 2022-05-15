@@ -92,13 +92,19 @@ class RecipeService extends ChangeNotifier {
 
     List<Recipe> recipes = [];
 
-    final url = Uri.http(AppData.baseUrl, '/api/recipes/${token}');
+    final url = Uri.http(AppData.baseUrl, '/api/recipes/');
 
     try {
-      final request = await http.get(url).timeout(const Duration(seconds: 15));
-      final response = json.decode(request.body);
+      final request = http.MultipartRequest('POST', url);
+      request.fields.addAll({'token': token!});
 
+      http.StreamedResponse streamResponse = await request.send();
+      final resp = await http.Response.fromStream(streamResponse)
+          .timeout(const Duration(seconds: 15));
+
+      final response = json.decode(resp.body);
       response.forEach((value) {
+        print(value);
         final temp = Recipe.fromMap(value);
         recipes.add(temp);
       });
