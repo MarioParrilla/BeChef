@@ -30,6 +30,17 @@ class RecipeScreen extends StatelessWidget {
     sRecipe = recipe;
     newUrlImg = recipeProvider!.urlImg;
 
+    final categoryService = Provider.of<CategoryService>(context);
+
+    loadCategories(context) async {
+      return (await categoryService.findCategories(context)).map((category) {
+        return DropdownMenuItem<String>(
+          value: category.name,
+          child: Text(category.name),
+        );
+      }).toList();
+    }
+
     Future<void> modifyRecipe() async {
       if (recipeProvider!.nameChanged ||
           recipeProvider!.descriptionChanged ||
@@ -101,53 +112,90 @@ class RecipeScreen extends StatelessWidget {
         Navigator.of(context).pop();
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white12,
-          foregroundColor: Colors.black,
-          elevation: 0,
-        ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  _ImageOfCard(urlImg: newUrlImg),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.17,
-                    left: MediaQuery.of(context).size.width * 0.41,
-                    child: const Icon(
-                      Icons.camera_alt,
-                      color: Color.fromRGBO(255, 255, 255, 0.8),
-                      size: 80,
-                    ),
+    return FutureBuilder(
+        future: loadCategories(context),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.white12,
+                  foregroundColor: Colors.black,
+                  elevation: 0,
+                ),
+                body: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          _ImageOfCard(urlImg: newUrlImg),
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * 0.17,
+                            left: MediaQuery.of(context).size.width * 0.41,
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: Color.fromRGBO(255, 255, 255, 0.8),
+                              size: 80,
+                            ),
+                          ),
+                        ],
+                      ),
+                      _FormRecipe(
+                          recipe: recipe,
+                          categories:
+                              snapshot.data as List<DropdownMenuItem<String>>),
+                    ],
                   ),
-                ],
+                ),
+                floatingActionButton: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    type
+                        ? FloatingActionButton(
+                            child: const Icon(Icons.delete),
+                            backgroundColor: Colors.deepOrange,
+                            onPressed: () async => await removeRecipe(),
+                            heroTag: null,
+                          )
+                        : SizedBox(),
+                    SizedBox(width: 10),
+                    FloatingActionButton(
+                      child: const Icon(Icons.save_rounded),
+                      backgroundColor: Colors.deepOrange,
+                      onPressed: () async =>
+                          {type ? await modifyRecipe() : await createRecipe()},
+                      heroTag: null,
+                    )
+                  ],
+                ));
+          } else {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white12,
+                foregroundColor: Colors.black,
+                elevation: 0,
               ),
-              _FormRecipe(recipe: recipe),
-            ],
-          ),
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            type
-                ? FloatingActionButton(
-                    child: const Icon(Icons.delete),
-                    backgroundColor: Colors.deepOrange,
-                    onPressed: () async => await removeRecipe(),
-                  )
-                : SizedBox(),
-            SizedBox(width: 10),
-            FloatingActionButton(
-              child: const Icon(Icons.save_rounded),
-              backgroundColor: Colors.deepOrange,
-              onPressed: () async =>
-                  {type ? await modifyRecipe() : await createRecipe()},
-            )
-          ],
-        ));
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  SizedBox(height: 50),
+                  Icon(Icons.error_outline,
+                      color: Colors.deepOrange, size: 100),
+                  Text('Se produjo un error',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                ],
+              )),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.close_rounded),
+                backgroundColor: Colors.deepOrange,
+                onPressed: () async => Navigator.of(context).pop(),
+                heroTag: null,
+              ),
+            );
+          }
+        });
   }
 }
 
@@ -245,7 +293,10 @@ class _ImageOfCard extends StatelessWidget {
 class _FormRecipe extends StatelessWidget {
   final Recipe? recipe;
 
-  const _FormRecipe({Key? key, required this.recipe}) : super(key: key);
+  final List<DropdownMenuItem<String>> categories;
+
+  const _FormRecipe({Key? key, required this.recipe, required this.categories})
+      : super(key: key);
 
   nameChanged(String value) {
     RecipeScreen.sRecipe!.name = value;
@@ -312,12 +363,7 @@ class _FormRecipe extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.deepOrange),
               ),
             ),
-            items: const [
-              DropdownMenuItem(value: 'Pastas', child: Text('Pastas')),
-              DropdownMenuItem(value: 'Pizzas', child: Text('Pizzas')),
-              DropdownMenuItem(value: 'Ensaladas', child: Text('Ensaladas')),
-              DropdownMenuItem(value: 'Otros', child: Text('Otros')),
-            ],
+            items: categories,
             value: recipe != null ? recipe!.category : null,
             onChanged: (value) => categoryChanged(value!),
           )

@@ -1,34 +1,76 @@
-import 'dart:developer';
-
 import 'package:be_chef_proyect/screens/info_recipe_screen.dart';
 import 'package:be_chef_proyect/screens/recipes_by_category_screen.dart';
-import 'package:be_chef_proyect/services/recipe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
+import '../services/services.dart';
 
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final recipeService = Provider.of<RecipeService>(context);
+    final categoryService = Provider.of<CategoryService>(context);
+    final ScrollController scrollController = ScrollController();
 
-    return Container(
-        color: const Color.fromRGBO(250, 250, 250, 1),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: const [
-              //_HorizontalRecipes(title: 'Populares', images: [NetworkImage('https://cdn.colombia.com/gastronomia/2011/08/25/macarrones-a-la-mediterranea-3327.jpg'),NetworkImage('https://www.hola.com/imagenes/cocina/recetas/20220208204252/pizza-pepperoni-mozzarella/1-48-890/pepperoni-pizza-abob-t.jpg'), NetworkImage('https://eldiariony.com/wp-content/uploads/sites/2/2020/04/shutterstock_1564648540.jpg?quality=60&strip=all&w=1200')]),
-              _HorizontalRecipes(category: 'Pastas'),
-              _HorizontalRecipes(category: 'Ensaladas'),
-              _HorizontalRecipes(category: 'Pizzas'),
-              _HorizontalRecipes(category: 'Otros'),
-            ],
-          ),
-        ));
+    return FutureBuilder(
+        future: categoryService.findCategories(context),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Category> categories = snapshot.data as List<Category>;
+            return Container(
+                color: const Color.fromRGBO(250, 250, 250, 1),
+                child: categories.isNotEmpty
+                    ? ListView.builder(
+                        controller: scrollController,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) => _HorizontalRecipes(
+                            category: categories[index].name))
+                    : Expanded(
+                        child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.category_outlined,
+                                color: Colors.deepOrange, size: 100),
+                            Text('No hay categorias',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                      )));
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  SizedBox(height: 50),
+                  Icon(Icons.error_outline,
+                      color: Colors.deepOrange, size: 100),
+                  Text('Se produjo un error',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                ],
+              ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(height: 50),
+                CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.deepOrange,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                ),
+                SizedBox(height: 10),
+                Text('Cargando categorias...',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+              ],
+            );
+          }
+        });
   }
 }
 
