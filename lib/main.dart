@@ -1,3 +1,4 @@
+import 'package:be_chef_proyect/providers/search_provider.dart';
 import 'package:be_chef_proyect/screens/screens.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ListCategoryProvider()),
         ChangeNotifierProvider(create: (_) => CategoryService()),
         ChangeNotifierProvider(create: (_) => UserService()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: const BeChefApp(),
     );
@@ -47,8 +49,9 @@ class BeChefApp extends StatelessWidget {
       initialRoute: 'init',
       routes: {
         'init': (_) => const InitScreen(),
-        'home': (_) => const HomeScreen(),
         'login': (_) => const LoginScreen(),
+        'home': (_) => const HomeScreen(),
+        'search': (_) => const SearchScreen(),
         'register': (_) => const RegisterScreen(),
         'editProfile': (_) => const EditProfileScreen(),
       },

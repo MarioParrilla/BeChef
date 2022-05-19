@@ -207,7 +207,6 @@ class RecipeService extends ChangeNotifier {
       final request =
           await http.delete(url).timeout(const Duration(seconds: 15));
       final response = json.decode(request.body);
-      print(response.runtimeType);
       if (response != true) {
         NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
         return false;

@@ -55,7 +55,6 @@ class AuthService extends ChangeNotifier {
 
       final Map<String, dynamic> response = json.decode(request.body);
 
-      print(response);
       if (response.containsKey('token')) {
         await storage.write(key: 'token', value: response['token']);
         return User.fromMap(response);

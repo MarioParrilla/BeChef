@@ -58,12 +58,10 @@ class _Pages extends StatelessWidget {
     return PageView(
       controller: bottonNavProvider.pageController,
       physics: const NeverScrollableScrollPhysics(),
-      children: [
-        const HomePageScreen(),
-        Container(
-          color: Colors.greenAccent,
-        ),
-        const ProfileScreen(),
+      children: const [
+        HomePageScreen(),
+        SearchScreen(),
+        ProfileScreen(),
       ],
     );
   }
