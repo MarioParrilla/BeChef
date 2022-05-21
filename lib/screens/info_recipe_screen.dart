@@ -2,6 +2,7 @@ import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/screens/external_profile.dart';
 import 'package:be_chef_proyect/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../services/recipe_service.dart';
@@ -72,6 +73,13 @@ class _ImageOfCard extends StatelessWidget {
   }
 }
 
+class Auxdata {
+  final String autor;
+  final double rate;
+
+  Auxdata(this.autor, this.rate);
+}
+
 class _FormRecipe extends StatelessWidget {
   final Recipe? recipe;
 
@@ -81,9 +89,15 @@ class _FormRecipe extends StatelessWidget {
   Widget build(BuildContext context) {
     final recipeService = Provider.of<RecipeService>(context, listen: false);
 
+    Future<Auxdata> getData() async {
+      String autorId = await recipeService.findUsernameById(
+          context, recipe!.idAutor.toString());
+      double rate = await recipeService.getRate(context, recipe!.id!);
+      return Auxdata(autorId, rate);
+    }
+
     return FutureBuilder(
-        future:
-            recipeService.findUsernameById(context, recipe!.idAutor.toString()),
+        future: getData(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Padding(
@@ -102,7 +116,7 @@ class _FormRecipe extends StatelessWidget {
                             pageBuilder: (_, __, ___) =>
                                 ExternalProfile(userID: recipe!.idAutor!),
                           )),
-                      child: Text(snapshot.data.toString(),
+                      child: Text((snapshot.data! as Auxdata).autor,
                           style: const TextStyle(
                               fontStyle: FontStyle.italic,
                               color: Colors.deepOrange))),
@@ -126,6 +140,46 @@ class _FormRecipe extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   Text(recipe!.steps ?? 'Error'),
+                  const SizedBox(height: 10),
+                  const Text('Valoracion',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star_rounded,
+                        color: Colors.deepOrange,
+                      ),
+                      Text((snapshot.data! as Auxdata).rate.toString()),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text('Valorar',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  RatingBar(
+                      initialRating: 0,
+                      minRating: 0,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      ratingWidget: RatingWidget(
+                          full: const Icon(
+                            Icons.star_rounded,
+                            color: Colors.deepOrange,
+                          ),
+                          half: const Icon(
+                            Icons.star_half_rounded,
+                            color: Colors.deepOrange,
+                          ),
+                          empty: const Icon(Icons.star_outline_rounded)),
+                      onRatingUpdate: (rating) async {
+                        await recipeService.saveRate(
+                            context, recipe!.id!, recipe!.idAutor!, rating);
+                      }),
                   const SizedBox(height: 10),
                 ],
               )),

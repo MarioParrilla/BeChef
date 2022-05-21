@@ -55,7 +55,6 @@ class SearchProvider extends ChangeNotifier {
 
     try {
       final request = await http.get(url).timeout(const Duration(seconds: 15));
-      print(request.body);
       final response = json.decode(request.body);
 
       response.forEach((value) {

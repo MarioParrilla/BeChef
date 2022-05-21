@@ -66,6 +66,52 @@ class RecipeService extends ChangeNotifier {
     return recipes;
   }
 
+  Future<double> getRate(BuildContext context, int recipeId) async {
+    double rate = 0;
+
+    final url =
+        Uri.http(AppData.baseUrl, '/api/recipes/rate/' + recipeId.toString());
+
+    try {
+      final request = await http.get(url).timeout(const Duration(seconds: 15));
+      final response = json.decode(request.body);
+      rate = response;
+    } catch (e) {
+      print(e);
+      await showDialog(
+          context: context, builder: (_) => AppData.alert(context));
+    }
+    //await Future.delayed(const Duration(seconds: 3));
+    return rate;
+  }
+
+  saveRate(BuildContext context, int recipeId, int userId, double rate) async {
+    bool result = false;
+
+    Map<String, dynamic> rateObj = {
+      'recipeId': recipeId,
+      'userId': userId,
+      'rate': rate
+    };
+
+    final url = Uri.http(AppData.baseUrl, '/api/recipes/rate/');
+    try {
+      final request = await http
+          .post(url,
+              headers: {"Content-Type": "application/json"},
+              body: json.encode(rateObj))
+          .timeout(const Duration(seconds: 15));
+      final response = json.decode(request.body);
+
+      if (response == false)
+        NotificationsService.showSnackBar('No se pudo mandar la calificación');
+    } catch (e) {
+      print(e);
+      await showDialog(
+          context: context, builder: (_) => AppData.alert(context));
+    }
+  }
+
   Future<String> findUsernameById(BuildContext context, String userId) async {
     String recipes = "";
 
@@ -104,7 +150,6 @@ class RecipeService extends ChangeNotifier {
 
       final response = json.decode(resp.body);
       response.forEach((value) {
-        print(value);
         final temp = Recipe.fromMap(value);
         recipes.add(temp);
       });
