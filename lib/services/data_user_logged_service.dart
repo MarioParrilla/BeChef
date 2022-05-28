@@ -11,6 +11,7 @@ class DataUserLoggedService extends ChangeNotifier {
 
   Future getUserByToken(BuildContext context) async {
     final String? token = await storage.read(key: 'token');
+    //final url = Uri.https(AppData.baseUrl, '/api/users/getUser/');
     final url = Uri.http(AppData.baseUrl, '/api/users/getUser/');
 
     try {
@@ -31,7 +32,9 @@ class DataUserLoggedService extends ChangeNotifier {
       }
     } catch (e) {
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
   }
 
@@ -58,13 +61,16 @@ class DataUserLoggedService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
   }
 
   Future<Map<String, dynamic>> _changeWithoutImg(
       Map<String, String> authData) async {
     final String? token = await storage.read(key: 'token');
+    //final url = Uri.https(AppData.baseUrl, '/api/users/');
     final url = Uri.http(AppData.baseUrl, '/api/users/');
 
     final request = http.MultipartRequest('PUT', url);
@@ -80,6 +86,7 @@ class DataUserLoggedService extends ChangeNotifier {
       Map<String, String> authData, File img) async {
     final String? token = await storage.read(key: 'token');
 
+    //final url = Uri.https(AppData.baseUrl, '/api/users/');
     final url = Uri.http(AppData.baseUrl, '/api/users/');
 
     final request = http.MultipartRequest('PUT', url);

@@ -168,7 +168,7 @@ class RecipeScreen extends StatelessWidget {
                     )
                   ],
                 ));
-          } else {
+          } else if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white12,
@@ -183,6 +183,35 @@ class RecipeScreen extends StatelessWidget {
                   Icon(Icons.error_outline,
                       color: Colors.deepOrange, size: 100),
                   Text('Se produjo un error',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                ],
+              )),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.close_rounded),
+                backgroundColor: Colors.deepOrange,
+                onPressed: () async => Navigator.of(context).pop(),
+                heroTag: null,
+              ),
+            );
+          } else {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white12,
+                foregroundColor: Colors.black,
+                elevation: 0,
+              ),
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  SizedBox(height: 50),
+                  CircularProgressIndicator.adaptive(
+                    backgroundColor: Colors.deepOrange,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                  ),
+                  SizedBox(height: 10),
+                  Text('Cargando información...',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
                 ],
@@ -281,8 +310,15 @@ class _ImageOfCard extends StatelessWidget {
                 color: Colors.deepOrange,
                 height: 250,
                 width: double.infinity,
-                child: Image(
-                  image: getImage(urlImg),
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/bechef_logo.png'),
+                  image: urlImg != null
+                      ? getImage(urlImg)
+                      : const NetworkImage(
+                          'https://static.thenounproject.com/png/380306-200.png'),
+                  imageErrorBuilder: (context, error, stackTrace) => const Image(
+                      image: NetworkImage(
+                          'https://static.thenounproject.com/png/380306-200.png')),
                   fit: BoxFit.cover,
                 ),
               ),

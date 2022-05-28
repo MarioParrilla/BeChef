@@ -16,6 +16,7 @@ class AuthService extends ChangeNotifier {
       'password': password,
     };
 
+    //final url = Uri.https(AppData.baseUrl, '/auth/login');
     final url = Uri.http(AppData.baseUrl, '/auth/login');
 
     try {
@@ -34,7 +35,9 @@ class AuthService extends ChangeNotifier {
       }
     } catch (e) {
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
   }
 
@@ -44,6 +47,7 @@ class AuthService extends ChangeNotifier {
       'password': password,
     };
 
+    //final url = Uri.https(AppData.baseUrl, '/auth/register');
     final url = Uri.http(AppData.baseUrl, '/auth/register');
 
     try {
@@ -63,7 +67,9 @@ class AuthService extends ChangeNotifier {
       }
     } catch (e) {
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
   }
 

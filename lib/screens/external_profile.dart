@@ -120,9 +120,6 @@ class _ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dataProfileProvider =
-        Provider.of<DataProfileProvider>(context, listen: true);
-
     final userService = Provider.of<UserService>(context);
 
     return FutureBuilder(
@@ -141,8 +138,9 @@ class _ProfileHeader extends StatelessWidget {
                     ),
                     child: CircleAvatar(
                       maxRadius: 50,
-                      backgroundImage: NetworkImage(user!.urlImg ??
-                          'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg'),
+                      backgroundImage: NetworkImage(user!.urlImg!.isEmpty
+                          ? 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg'
+                          : user.urlImg!),
                     ),
                   ),
                   Column(children: [
@@ -151,7 +149,7 @@ class _ProfileHeader extends StatelessWidget {
                       child: Text(user.username ?? 'username',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
@@ -160,7 +158,7 @@ class _ProfileHeader extends StatelessWidget {
                           user.description ?? 'description',
                           maxLines: 5,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                           ),
                         )),
@@ -201,7 +199,6 @@ class _ProfileHeader extends StatelessWidget {
             );
           }
         });
-    ;
   }
 }
 
@@ -268,7 +265,7 @@ class _RecipeCard extends StatelessWidget {
                           recipe.name!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -278,7 +275,7 @@ class _RecipeCard extends StatelessWidget {
                       recipe.description!,
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                       ),
                     )),

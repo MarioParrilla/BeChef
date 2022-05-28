@@ -15,6 +15,7 @@ class UserService extends ChangeNotifier {
         description: null,
         urlImg: null);
 
+    //final url = Uri.https(AppData.baseUrl, '/api/users/${userID}');
     final url = Uri.http(AppData.baseUrl, '/api/users/${userID}');
 
     try {
@@ -29,7 +30,9 @@ class UserService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return user;

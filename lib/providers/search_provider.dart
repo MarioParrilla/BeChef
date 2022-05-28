@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -29,6 +27,7 @@ class SearchProvider extends ChangeNotifier {
   getRecipesByQuery(String query, BuildContext context) async {
     List<Recipe> recipes = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/q/$query');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/q/$query');
 
     try {
@@ -43,7 +42,9 @@ class SearchProvider extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     notifyListeners();
   }
@@ -51,6 +52,7 @@ class SearchProvider extends ChangeNotifier {
   getUsersByQuery(String query, BuildContext context) async {
     List<User> users = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/users/q/$query');
     final url = Uri.http(AppData.baseUrl, '/api/users/q/$query');
 
     try {
@@ -65,7 +67,9 @@ class SearchProvider extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     notifyListeners();
   }

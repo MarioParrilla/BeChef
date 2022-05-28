@@ -1,6 +1,5 @@
 import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/screens/external_profile.dart';
-import 'package:be_chef_proyect/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +61,10 @@ class _ImageOfCard extends StatelessWidget {
                   ? FadeInImage(
                       placeholder: const AssetImage('/assets/bechef_logo.png'),
                       image: NetworkImage(urlImg!),
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          const Image(
+                              image: NetworkImage(
+                                  'https://static.thenounproject.com/png/380306-200.png')),
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
@@ -93,7 +96,7 @@ class _FormRecipe extends StatelessWidget {
       String autorId = await recipeService.findUsernameById(
           context, recipe!.idAutor.toString());
       double rate = await recipeService.getRate(context, recipe!.id!);
-      return Auxdata(autorId, rate);
+      return Auxdata(autorId, double.parse(rate.toStringAsPrecision(2)));
     }
 
     return FutureBuilder(

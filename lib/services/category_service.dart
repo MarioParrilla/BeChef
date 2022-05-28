@@ -9,6 +9,7 @@ class CategoryService extends ChangeNotifier {
   Future<List<Category>> findCategories(BuildContext context) async {
     List<Category> categories = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/categories/');
     final url = Uri.http(AppData.baseUrl, '/api/categories/');
 
     try {
@@ -22,7 +23,9 @@ class CategoryService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return categories;

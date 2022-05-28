@@ -21,6 +21,7 @@ class RecipeService extends ChangeNotifier {
         Provider.of<ListCategoryProvider>(context);
     List<Recipe> recipes = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/category/' + category);
     final url = Uri.http(AppData.baseUrl, '/api/recipes/category/' + category);
 
     try {
@@ -36,7 +37,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return recipes;
@@ -46,6 +49,7 @@ class RecipeService extends ChangeNotifier {
       BuildContext context, String category, int lastID) async {
     List<Recipe> recipes = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/category/' + category + '/' + lastID.toString());
     final url = Uri.http(AppData.baseUrl,
         '/api/recipes/category/' + category + '/' + lastID.toString());
 
@@ -60,7 +64,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return recipes;
@@ -69,6 +75,7 @@ class RecipeService extends ChangeNotifier {
   Future<double> getRate(BuildContext context, int recipeId) async {
     double rate = 0;
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/rate/' + recipeId.toString());
     final url =
         Uri.http(AppData.baseUrl, '/api/recipes/rate/' + recipeId.toString());
 
@@ -79,7 +86,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return rate;
@@ -87,14 +96,17 @@ class RecipeService extends ChangeNotifier {
 
   saveRate(BuildContext context, int recipeId, int userId, double rate) async {
     bool result = false;
+    final String? token = await storage.read(key: 'token');
 
     Map<String, dynamic> rateObj = {
       'recipeId': recipeId,
-      'userId': userId,
+      'userToken': token,
       'rate': rate
     };
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/rate/');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/rate/');
+
     try {
       final request = await http
           .post(url,
@@ -108,13 +120,16 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
   }
 
   Future<String> findUsernameById(BuildContext context, String userId) async {
     String recipes = "";
 
+    //final url = Uri.https(AppData.baseUrl, '/api/users/' + userId);
     final url = Uri.http(AppData.baseUrl, '/api/users/' + userId);
 
     try {
@@ -125,7 +140,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return recipes;
@@ -138,6 +155,7 @@ class RecipeService extends ChangeNotifier {
 
     List<Recipe> recipes = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/');
 
     try {
@@ -157,7 +175,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return recipes;
@@ -167,6 +187,7 @@ class RecipeService extends ChangeNotifier {
       BuildContext context, int userID) async {
     List<Recipe> recipes = [];
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/user/${userID}');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/user/${userID}');
 
     try {
@@ -180,7 +201,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
     //await Future.delayed(const Duration(seconds: 3));
     return recipes;
@@ -212,13 +235,17 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
     }
   }
 
   Future<Map<String, dynamic>> _changeWithoutImg(
       Map<String, String> authData) async {
     final String? token = await storage.read(key: 'token');
+
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/');
 
     final request = http.MultipartRequest('PUT', url);
@@ -234,6 +261,7 @@ class RecipeService extends ChangeNotifier {
       Map<String, String> authData, File img) async {
     final String? token = await storage.read(key: 'token');
 
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/');
 
     final request = http.MultipartRequest('PUT', url);
@@ -247,6 +275,7 @@ class RecipeService extends ChangeNotifier {
   }
 
   Future removeRecipe(BuildContext context, int id) async {
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/${id}');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/${id}');
     try {
       final request =
@@ -261,7 +290,9 @@ class RecipeService extends ChangeNotifier {
     } catch (e) {
       print(e);
       await showDialog(
-          context: context, builder: (_) => AppData.alert(context));
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
       return false;
     }
   }

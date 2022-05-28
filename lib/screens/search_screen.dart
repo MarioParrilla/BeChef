@@ -173,6 +173,9 @@ class _RecipeCard extends StatelessWidget {
                   placeholder: const AssetImage('assets/bechef_logo.png'),
                   image: NetworkImage(recipe.urlImg ??
                       'https://static.thenounproject.com/png/380306-200.png'),
+                  imageErrorBuilder: (context, error, stackTrace) => const Image(
+                      image: NetworkImage(
+                          'https://static.thenounproject.com/png/380306-200.png')),
                   width: 100,
                   height: 150,
                   fit: BoxFit.cover,

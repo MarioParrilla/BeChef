@@ -244,6 +244,9 @@ class _RecipeCard extends StatelessWidget {
                   ? NetworkImage(imgUrl!)
                   : const NetworkImage(
                       'https://static.thenounproject.com/png/380306-200.png'),
+              imageErrorBuilder: (context, error, stackTrace) => const Image(
+                  image: NetworkImage(
+                      'https://static.thenounproject.com/png/380306-200.png')),
               width: 150,
               height: 150,
               fit: BoxFit.cover,
