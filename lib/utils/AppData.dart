@@ -35,4 +35,24 @@ class AppData {
       ),
     );
   }
+
+  static AlertDialog loagindAlert(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        height: 160,
+        child: Row(
+          children: const [
+            SizedBox(width: 30),
+            CircularProgressIndicator.adaptive(
+              backgroundColor: Colors.deepOrange,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            ),
+            SizedBox(width: 30),
+            Text('Enviando...',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+          ],
+        ),
+      ),
+    );
+  }
 }

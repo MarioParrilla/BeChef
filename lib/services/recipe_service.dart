@@ -35,7 +35,7 @@ class RecipeService extends ChangeNotifier {
 
       listCategoryProvider.recipes.addAll(recipes);
     } catch (e) {
-      print(e);
+      print('Error findRecipesByCategory ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -62,7 +62,7 @@ class RecipeService extends ChangeNotifier {
         recipes.add(temp);
       });
     } catch (e) {
-      print(e);
+      print('Error findRecipesByCategoryPaged ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -84,7 +84,7 @@ class RecipeService extends ChangeNotifier {
       final response = json.decode(request.body);
       rate = response;
     } catch (e) {
-      print(e);
+      print('Error getRate ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -118,7 +118,7 @@ class RecipeService extends ChangeNotifier {
       if (response == false)
         NotificationsService.showSnackBar('No se pudo mandar la calificación');
     } catch (e) {
-      print(e);
+      print('Error saveRate ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -138,7 +138,7 @@ class RecipeService extends ChangeNotifier {
 
       recipes = response["username"];
     } catch (e) {
-      print(e);
+      print('Error findUsernameById ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -160,7 +160,8 @@ class RecipeService extends ChangeNotifier {
 
     try {
       final request = http.MultipartRequest('POST', url);
-      request.fields.addAll({'token': token!});
+      if (token == null) return recipes;
+      request.fields.addAll({'token': token});
 
       http.StreamedResponse streamResponse = await request.send();
       final resp = await http.Response.fromStream(streamResponse)
@@ -173,7 +174,7 @@ class RecipeService extends ChangeNotifier {
       });
       loggedUserRecipesProvider.recipes = recipes;
     } catch (e) {
-      print(e);
+      print('Error loadRecipesUserLogged ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -222,11 +223,16 @@ class RecipeService extends ChangeNotifier {
         'steps': steps,
         'category': category,
       };
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.loagindAlert(context));
       if (img == null) {
         response = await _changeWithoutImg(authData);
       } else {
         response = await _changeWithImg(authData, img);
       }
+      Navigator.of(context).pop();
       if (response.containsKey('name')) {
         return Recipe.fromMap(response);
       } else {
@@ -278,9 +284,14 @@ class RecipeService extends ChangeNotifier {
     //final url = Uri.https(AppData.baseUrl, '/api/recipes/${id}');
     final url = Uri.http(AppData.baseUrl, '/api/recipes/${id}');
     try {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.loagindAlert(context));
       final request =
           await http.delete(url).timeout(const Duration(seconds: 15));
       final response = json.decode(request.body);
+      Navigator.of(context).pop();
       if (response != true) {
         NotificationsService.showSnackBar('Registro de la cuenta incorrecto');
         return false;

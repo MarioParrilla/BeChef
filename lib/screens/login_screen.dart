@@ -6,8 +6,6 @@ import 'package:be_chef_proyect/providers/providers.dart';
 import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../models/models.dart';
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 

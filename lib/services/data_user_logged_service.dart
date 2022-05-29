@@ -25,12 +25,14 @@ class DataUserLoggedService extends ChangeNotifier {
           .timeout(const Duration(seconds: 15));
 
       final response = json.decode(resp.body);
+
       if (response.containsKey('username')) {
         return User.fromMap(response);
       } else {
         return null;
       }
     } catch (e) {
+      print('Error getUserByToken ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
@@ -48,18 +50,24 @@ class DataUserLoggedService extends ChangeNotifier {
         'username': newUsername,
         'description': newDescription,
       };
+
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.loagindAlert(context));
       if (img == null) {
         response = await _changeWithoutImg(authData);
       } else {
         response = await _changeWithImg(authData, img);
       }
+      Navigator.of(context).pop();
       if (response.containsKey('username')) {
         return User.fromMap(response);
       } else {
         return response;
       }
     } catch (e) {
-      print(e);
+      print('Error changeBasicDataUser ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,

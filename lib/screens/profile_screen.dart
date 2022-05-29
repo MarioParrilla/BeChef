@@ -213,7 +213,7 @@ class _RecipeCard extends StatelessWidget {
               pageBuilder: (_, __, ___) =>
                   RecipeScreen(recipe: recipe, type: true),
             )),
-        recipeProvider.urlImg = recipe.urlImg!
+        recipeProvider.urlImg = recipe.urlImg ?? ''
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -238,9 +238,13 @@ class _RecipeCard extends StatelessWidget {
                       ? NetworkImage(recipe.urlImg!)
                       : const NetworkImage(
                           'https://static.thenounproject.com/png/380306-200.png'),
-                  imageErrorBuilder: (context, error, stackTrace) => const Image(
-                      image: NetworkImage(
-                          'https://static.thenounproject.com/png/380306-200.png')),
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      const Image(
+                    image: NetworkImage(
+                        'https://static.thenounproject.com/png/380306-200.png'),
+                    width: 100,
+                    height: 150,
+                  ),
                   width: 100,
                   height: 150,
                   fit: BoxFit.cover,
@@ -261,7 +265,7 @@ class _RecipeCard extends StatelessWidget {
                           recipe.name!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -271,7 +275,7 @@ class _RecipeCard extends StatelessWidget {
                       recipe.description!,
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                       ),
                     )),

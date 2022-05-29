@@ -12,7 +12,7 @@ import '../services/services.dart';
 class RecipeScreen extends StatelessWidget {
   final Recipe recipe;
   static Recipe? sRecipe;
-  static File? newImg = null;
+  static File? newImg;
   static String newUrlImg = '';
   static RecipeProvider? recipeProvider;
   final bool type;
@@ -47,6 +47,7 @@ class RecipeScreen extends StatelessWidget {
           recipeProvider!.stepsChanged ||
           recipeProvider!.categoryChanged ||
           recipeProvider!.urlImgChanged) {
+        print(newImg);
         dynamic newRecipe = await recipeService.changeDataRecipe(
             context,
             recipe.id.toString(),
@@ -63,14 +64,17 @@ class RecipeScreen extends StatelessWidget {
           recipeProvider!.categoryChanged = false;
           recipeProvider!.urlImgChanged = false;
           recipeProvider!.urlImg = '';
+          recipeProvider!.urlImgTemp = '';
+          newImg = null;
           loggedUserRecipesProvider.replaceRecipe(newRecipe);
 
           Navigator.of(context).pop();
         } else {
           NotificationsService.showSnackBar(newRecipe['error']);
         }
-      } else
+      } else {
         Navigator.of(context).pop();
+      }
     }
 
     Future<void> removeRecipe() async {
@@ -78,6 +82,14 @@ class RecipeScreen extends StatelessWidget {
           ? Navigator.of(context).pop()
           : null;
       loggedUserRecipesProvider.removeRecipe(recipe.id!);
+      recipeProvider!.nameChanged = false;
+      recipeProvider!.descriptionChanged = false;
+      recipeProvider!.stepsChanged = false;
+      recipeProvider!.categoryChanged = false;
+      recipeProvider!.urlImgChanged = false;
+      recipeProvider!.urlImg = '';
+      recipeProvider!.urlImgTemp = '';
+      newImg = null;
     }
 
     Future<void> createRecipe() async {
@@ -102,6 +114,8 @@ class RecipeScreen extends StatelessWidget {
           recipeProvider!.categoryChanged = false;
           recipeProvider!.urlImgChanged = false;
           recipeProvider!.urlImg = '';
+          recipeProvider!.urlImgTemp = '';
+          newImg = null;
           loggedUserRecipesProvider.addRecipe(newRecipe);
 
           Navigator.of(context).pop();
@@ -157,8 +171,8 @@ class RecipeScreen extends StatelessWidget {
                             onPressed: () async => await removeRecipe(),
                             heroTag: null,
                           )
-                        : SizedBox(),
-                    SizedBox(width: 10),
+                        : const SizedBox(),
+                    const SizedBox(width: 10),
                     FloatingActionButton(
                       child: const Icon(Icons.save_rounded),
                       backgroundColor: Colors.deepOrange,
@@ -288,7 +302,7 @@ class _ImageOfCard extends StatelessWidget {
 
     ImageProvider getImage(String? img) {
       if (img == null || img == '') {
-        return AssetImage('assets/bechef_logo.png');
+        return const AssetImage('assets/bechef_logo.png');
       }
 
       if (img.startsWith('http')) {

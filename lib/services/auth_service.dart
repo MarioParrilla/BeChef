@@ -20,6 +20,10 @@ class AuthService extends ChangeNotifier {
     final url = Uri.http(AppData.baseUrl, '/auth/login');
 
     try {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.loagindAlert(context));
       final request = await http
           .post(url,
               headers: {"Content-Type": "application/json"},
@@ -51,6 +55,10 @@ class AuthService extends ChangeNotifier {
     final url = Uri.http(AppData.baseUrl, '/auth/register');
 
     try {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.loagindAlert(context));
       final request = await http
           .post(url,
               headers: {"Content-Type": "application/json"},
