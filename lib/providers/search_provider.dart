@@ -36,6 +36,10 @@ class SearchProvider extends ChangeNotifier {
 
       response.forEach((value) {
         final temp = Recipe.fromMap(value);
+        temp.description =
+            const Utf8Decoder().convert(temp.description!.runes.toList());
+        temp.name = const Utf8Decoder().convert(temp.name!.runes.toList());
+        temp.steps = const Utf8Decoder().convert(temp.steps!.runes.toList());
         recipes.add(temp);
       });
       _recipes = recipes;
@@ -61,6 +65,13 @@ class SearchProvider extends ChangeNotifier {
 
       response.forEach((value) {
         final temp = User.fromMap(value);
+        temp.username =
+            const Utf8Decoder().convert(temp.username!.runes.toList());
+        temp.email = const Utf8Decoder().convert(temp.email!.runes.toList());
+        temp.description =
+            const Utf8Decoder().convert(temp.description!.runes.toList());
+        temp.password =
+            const Utf8Decoder().convert(temp.password!.runes.toList());
         users.add(temp);
       });
       _users = users;

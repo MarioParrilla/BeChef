@@ -2,12 +2,15 @@ import 'package:be_chef_proyect/providers/search_provider.dart';
 import 'package:be_chef_proyect/screens/screens.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:be_chef_proyect/providers//providers.dart';
-
 import 'providers/list_category_provider.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const AppState());
 }
 

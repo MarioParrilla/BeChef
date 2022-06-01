@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
 import '../providers/list_category_provider.dart';
 import '../utils/AppData.dart';
 
@@ -30,6 +29,10 @@ class RecipeService extends ChangeNotifier {
 
       response.forEach((value) {
         final temp = Recipe.fromMap(value);
+        temp.description =
+            const Utf8Decoder().convert(temp.description!.runes.toList());
+        temp.name = const Utf8Decoder().convert(temp.name!.runes.toList());
+        temp.steps = const Utf8Decoder().convert(temp.steps!.runes.toList());
         recipes.add(temp);
       });
 
@@ -59,6 +62,10 @@ class RecipeService extends ChangeNotifier {
 
       response.forEach((value) {
         final temp = Recipe.fromMap(value);
+        temp.description =
+            const Utf8Decoder().convert(temp.description!.runes.toList());
+        temp.name = const Utf8Decoder().convert(temp.name!.runes.toList());
+        temp.steps = const Utf8Decoder().convert(temp.steps!.runes.toList());
         recipes.add(temp);
       });
     } catch (e) {
@@ -168,8 +175,13 @@ class RecipeService extends ChangeNotifier {
           .timeout(const Duration(seconds: 15));
 
       final response = json.decode(resp.body);
+
       response.forEach((value) {
         final temp = Recipe.fromMap(value);
+        temp.description =
+            const Utf8Decoder().convert(temp.description!.runes.toList());
+        temp.name = const Utf8Decoder().convert(temp.name!.runes.toList());
+        temp.steps = const Utf8Decoder().convert(temp.steps!.runes.toList());
         recipes.add(temp);
       });
       loggedUserRecipesProvider.recipes = recipes;
@@ -197,6 +209,10 @@ class RecipeService extends ChangeNotifier {
 
       response.forEach((value) {
         final temp = Recipe.fromMap(value);
+        temp.description =
+            const Utf8Decoder().convert(temp.description!.runes.toList());
+        temp.name = const Utf8Decoder().convert(temp.name!.runes.toList());
+        temp.steps = const Utf8Decoder().convert(temp.steps!.runes.toList());
         recipes.add(temp);
       });
     } catch (e) {
@@ -223,6 +239,7 @@ class RecipeService extends ChangeNotifier {
         'steps': steps,
         'category': category,
       };
+
       showDialog(
           barrierDismissible: false,
           context: context,

@@ -27,7 +27,16 @@ class DataUserLoggedService extends ChangeNotifier {
       final response = json.decode(resp.body);
 
       if (response.containsKey('username')) {
-        return User.fromMap(response);
+        User user = User.fromMap(response);
+        user.username =
+            const Utf8Decoder().convert(user.username!.runes.toList());
+        user.email = const Utf8Decoder().convert(user.email!.runes.toList());
+        user.description =
+            const Utf8Decoder().convert(user.description!.runes.toList());
+        user.password =
+            const Utf8Decoder().convert(user.password!.runes.toList());
+
+        return user;
       } else {
         return null;
       }
@@ -62,7 +71,16 @@ class DataUserLoggedService extends ChangeNotifier {
       }
       Navigator.of(context).pop();
       if (response.containsKey('username')) {
-        return User.fromMap(response);
+        User user = User.fromMap(response);
+        user.username =
+            const Utf8Decoder().convert(user.username!.runes.toList());
+        user.email = const Utf8Decoder().convert(user.email!.runes.toList());
+        user.description =
+            const Utf8Decoder().convert(user.description!.runes.toList());
+        user.password =
+            const Utf8Decoder().convert(user.password!.runes.toList());
+
+        return user;
       } else {
         return response;
       }

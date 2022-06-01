@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
       create: (_) => BotttonNavProvider(),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Image(
               image: AssetImage('assets/bechef_logo.png'),
               width: 50,

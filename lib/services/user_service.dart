@@ -23,7 +23,16 @@ class UserService extends ChangeNotifier {
       final response = json.decode(request.body);
 
       if (response.containsKey('token')) {
-        return User.fromMap(response);
+        User user = User.fromMap(response);
+        user.username =
+            const Utf8Decoder().convert(user.username!.runes.toList());
+        user.email = const Utf8Decoder().convert(user.email!.runes.toList());
+        user.description =
+            const Utf8Decoder().convert(user.description!.runes.toList());
+        user.password =
+            const Utf8Decoder().convert(user.password!.runes.toList());
+
+        return user;
       } else {
         return response['error'];
       }

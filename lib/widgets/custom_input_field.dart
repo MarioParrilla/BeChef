@@ -1,7 +1,8 @@
+import 'package:be_chef_proyect/utils/AppData.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomInputField extends StatelessWidget {
-
   final String? labelText;
   final String? initialValue;
   final String? hintText;
@@ -17,18 +18,18 @@ class CustomInputField extends StatelessWidget {
   final Function onChange;
 
   const CustomInputField({
-    Key? key, 
-    this.labelText, 
-    this.initialValue, 
-    this.hintText, 
-    this.helperText, 
+    Key? key,
+    this.labelText,
+    this.initialValue,
+    this.hintText,
+    this.helperText,
     this.icon,
-    this.keyboardType, 
-    this.maxLines, 
-    this.minLines, 
-    this.isPassword = false, 
-    required this.color, 
-    required this.validator, 
+    this.keyboardType,
+    this.maxLines,
+    this.minLines,
+    this.isPassword = false,
+    required this.color,
+    required this.validator,
     required this.onChange,
   }) : super(key: key);
 
@@ -44,6 +45,9 @@ class CustomInputField extends StatelessWidget {
       onChanged: (value) => onChange(value),
       validator: (value) => validator(value),
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      inputFormatters: [
+        FilteringTextInputFormatter.deny(RegExp(AppData.regexToRemoveEmoji))
+      ],
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,
@@ -51,15 +55,10 @@ class CustomInputField extends StatelessWidget {
         helperText: helperText,
         prefixIcon: icon == null ? null : Icon(icon, color: color),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: color
-          ),
+          borderSide: BorderSide(color: color),
         ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: color
-          )
-        ),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: color)),
       ),
     );
   }

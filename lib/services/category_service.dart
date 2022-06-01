@@ -18,6 +18,8 @@ class CategoryService extends ChangeNotifier {
 
       response.forEach((value) {
         final temp = Category.fromMap(value);
+        temp.name = const Utf8Decoder().convert(temp.name.runes.toList());
+
         categories.add(temp);
       });
     } catch (e) {

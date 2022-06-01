@@ -201,91 +201,146 @@ class _RecipeCard extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final recipeService = Provider.of<RecipeService>(context, listen: false);
+
     double width = MediaQuery.of(context).size.width;
     RecipeProvider recipeProvider =
         Provider.of<RecipeProvider>(context, listen: true);
 
-    return GestureDetector(
-      onTap: () => {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) =>
-                  RecipeScreen(recipe: recipe, type: true),
-            )),
-        recipeProvider.urlImg = recipe.urlImg ?? ''
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.white,
-            border: Border.all(color: Colors.black12, width: 1),
-          ),
-          padding: const EdgeInsets.only(right: 10),
-          height: 150,
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10)),
-                child: Container(
-                    child: FadeInImage(
-                  placeholder: const AssetImage('assets/bechef_logo.png'),
-                  image: recipe.urlImg != null
-                      ? NetworkImage(recipe.urlImg!)
-                      : const NetworkImage(
-                          'https://static.thenounproject.com/png/380306-200.png'),
-                  imageErrorBuilder: (context, error, stackTrace) =>
-                      const Image(
-                    image: NetworkImage(
-                        'https://static.thenounproject.com/png/380306-200.png'),
-                    width: 100,
-                    height: 150,
-                  ),
-                  width: 100,
-                  height: 150,
-                  fit: BoxFit.cover,
-                )),
-              ),
-              ClipRRect(
+    return FutureBuilder(
+        future: recipeService.getRate(context, recipe.id!),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) =>
+                          RecipeScreen(recipe: recipe, type: true),
+                    )),
+                recipeProvider.urlImg = recipe.urlImg ?? ''
+              },
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
                 child: Container(
-                  margin: const EdgeInsets.only(
-                    left: 10,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12, width: 1),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  width: 150,
-                  child: Column(children: [
-                    Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          recipe.name!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )),
-                    Flexible(
-                        child: Text(
-                      recipe.description!,
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 12,
+                  padding: const EdgeInsets.only(right: 10),
+                  height: 150,
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10)),
+                        child: Stack(
+                          children: [
+                            FadeInImage(
+                              placeholder:
+                                  const AssetImage('assets/bechef_logo.png'),
+                              image: recipe.urlImg != null
+                                  ? NetworkImage(recipe.urlImg!)
+                                  : const NetworkImage(
+                                      'https://static.thenounproject.com/png/380306-200.png'),
+                              imageErrorBuilder: (context, error, stackTrace) =>
+                                  const Image(
+                                image: NetworkImage(
+                                    'https://static.thenounproject.com/png/380306-200.png'),
+                                width: 100,
+                                height: 150,
+                              ),
+                              width: 100,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.deepOrange,
+                                ),
+                                Text(
+                                  snapshot.data!.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.deepOrange),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    )),
-                  ]),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          width: 150,
+                          child: Column(children: [
+                            Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  recipe.name!,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            Flexible(
+                                child: Text(
+                              recipe.description!,
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                            )),
+                          ]),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          } else if (snapshot.hasError) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(height: 50),
+                Icon(Icons.error_outline, color: Colors.deepOrange, size: 100),
+                Text('Se produjo un error',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ))
+              ],
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(height: 50),
+                CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.deepOrange,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                ),
+                SizedBox(height: 10),
+                Text('Cargando informacion...',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+              ],
+            );
+          }
+        });
   }
 }

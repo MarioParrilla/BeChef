@@ -35,6 +35,7 @@ class AuthService extends ChangeNotifier {
         await storage.write(key: 'token', value: response['token']);
         return null;
       } else {
+        Navigator.of(context).pop();
         return response['error'];
       }
     } catch (e) {
@@ -69,8 +70,19 @@ class AuthService extends ChangeNotifier {
 
       if (response.containsKey('token')) {
         await storage.write(key: 'token', value: response['token']);
-        return User.fromMap(response);
+
+        User user = User.fromMap(response);
+        user.username =
+            const Utf8Decoder().convert(user.username!.runes.toList());
+        user.email = const Utf8Decoder().convert(user.email!.runes.toList());
+        user.description =
+            const Utf8Decoder().convert(user.description!.runes.toList());
+        user.password =
+            const Utf8Decoder().convert(user.password!.runes.toList());
+
+        return user;
       } else {
+        Navigator.of(context).pop();
         return response['error'];
       }
     } catch (e) {
