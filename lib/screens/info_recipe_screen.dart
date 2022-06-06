@@ -1,10 +1,12 @@
 import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/screens/external_profile.dart';
+import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../services/recipe_service.dart';
+import '../services/services.dart';
 
 class InfoRecipeScreen extends StatelessWidget {
   final Recipe recipe;
@@ -92,13 +94,16 @@ class _FormRecipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recipeService = Provider.of<RecipeService>(context, listen: false);
+    final userService =
+        Provider.of<DataUserLoggedService>(context, listen: false);
 
     Future<Auxdata> getData() async {
       String autorId = await recipeService.findUsernameById(
           context, recipe!.idAutor.toString());
+      User u = await userService.getUserByToken(context);
       double rate = await recipeService.getRate(context, recipe!.id!);
-      double rateOfAutor = await recipeService.getRateOfAutor(
-          context, recipe!.id!, recipe!.idAutor!);
+      double rateOfAutor =
+          await recipeService.getRateOfAutor(context, recipe!.id!, u.id!);
       return Auxdata(autorId, double.parse(rate.toStringAsPrecision(2)),
           double.parse(rateOfAutor.toStringAsPrecision(2)));
     }

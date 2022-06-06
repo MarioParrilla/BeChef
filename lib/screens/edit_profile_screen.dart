@@ -63,6 +63,7 @@ class EditProfileScreen extends StatelessWidget {
           dataProfileProvider!.usernameChanged = false;
           dataProfileProvider!.descriptionChanged = false;
           dataProfileProvider!.urlImgChanged = false;
+          newImg = null;
 
           Navigator.of(context).pop();
         } else {

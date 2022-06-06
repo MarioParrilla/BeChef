@@ -104,9 +104,7 @@ class RecipeService extends ChangeNotifier {
   Future<double> getRateOfAutor(
       BuildContext context, int recipeId, int userId) async {
     double rate = 0;
-
     //final url = Uri.https(AppData.baseUrl, '/api/recipes/rate/' + recipeId.toString());
-    print('${recipeId} / ${userId}');
     final url = Uri.http(AppData.baseUrl,
         '/api/recipes/rateOf/' + recipeId.toString() + '-' + userId.toString());
 
@@ -115,7 +113,7 @@ class RecipeService extends ChangeNotifier {
 
       final response = json.decode(request.body);
       rate = response;
-      print(rate);
+
       rate = double.parse(rate.toStringAsPrecision(3));
     } catch (e) {
       print('Error getRateOfAutor ${e}');

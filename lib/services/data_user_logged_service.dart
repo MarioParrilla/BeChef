@@ -43,7 +43,6 @@ class DataUserLoggedService extends ChangeNotifier {
           user.password =
               const Utf8Decoder().convert(user.password!.runes.toList());
         }
-
         return user;
       } else {
         return null;
