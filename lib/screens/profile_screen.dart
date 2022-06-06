@@ -257,22 +257,35 @@ class _RecipeCard extends StatelessWidget {
                               height: 150,
                               fit: BoxFit.cover,
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.deepOrange,
-                                ),
-                                Text(
-                                  snapshot.data!.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.deepOrange),
-                                ),
-                              ],
-                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        const Icon(
+                                          Icons.star_rounded,
+                                          color: Colors.deepOrange,
+                                        ),
+                                        Text(
+                                          snapshot.data!.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.deepOrange),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                          height: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ))
                           ],
                         ),
                       ),

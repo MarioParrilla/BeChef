@@ -19,6 +19,8 @@ class HomePageScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Category> categories = snapshot.data as List<Category>;
+            categories.insert(0, Category(name: 'Popular'));
+
             return Container(
                 color: const Color.fromRGBO(250, 250, 250, 1),
                 child: categories.isNotEmpty
@@ -225,35 +227,196 @@ class _RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => InfoRecipeScreen(recipe: recipe),
-            )),
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: Container(
-            child: FadeInImage(
-              placeholder: const AssetImage('assets/bechef_logo.png'),
-              image: imgUrl != null
-                  ? NetworkImage(imgUrl!)
-                  : const NetworkImage(
-                      'https://static.thenounproject.com/png/380306-200.png'),
-              imageErrorBuilder: (context, error, stackTrace) => const Image(
-                  image: NetworkImage(
-                      'https://static.thenounproject.com/png/380306-200.png')),
-              width: 150,
-              height: 150,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
+    final recipeService = Provider.of<RecipeService>(context, listen: false);
+
+    return FutureBuilder(
+        future: recipeService.getRate(context, recipe.id!),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) =>
+                          InfoRecipeScreen(recipe: recipe),
+                    )),
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Stack(children: [
+                    FadeInImage(
+                      placeholder: const AssetImage('assets/bechef_logo.png'),
+                      image: imgUrl != null
+                          ? NetworkImage(imgUrl!)
+                          : const NetworkImage(
+                              'https://static.thenounproject.com/png/380306-200.png'),
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          const Image(
+                              image: NetworkImage(
+                                  'https://static.thenounproject.com/png/380306-200.png')),
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            color: Colors.white,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.deepOrange,
+                                ),
+                                Text(
+                                  snapshot.data!.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.deepOrange),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                  ]),
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) =>
+                          InfoRecipeScreen(recipe: recipe),
+                    )),
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Stack(children: [
+                    FadeInImage(
+                      placeholder: const AssetImage('assets/bechef_logo.png'),
+                      image: imgUrl != null
+                          ? NetworkImage(imgUrl!)
+                          : const NetworkImage(
+                              'https://static.thenounproject.com/png/380306-200.png'),
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          const Image(
+                              image: NetworkImage(
+                                  'https://static.thenounproject.com/png/380306-200.png')),
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            color: Colors.white,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: const [
+                                Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.deepOrange,
+                                ),
+                                Icon(
+                                  Icons.error_outline_rounded,
+                                  color: Colors.redAccent,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                  ]),
+                ),
+              ),
+            );
+          } else {
+            return GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) =>
+                          InfoRecipeScreen(recipe: recipe),
+                    )),
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Stack(children: [
+                    FadeInImage(
+                      placeholder: const AssetImage('assets/bechef_logo.png'),
+                      image: imgUrl != null
+                          ? NetworkImage(imgUrl!)
+                          : const NetworkImage(
+                              'https://static.thenounproject.com/png/380306-200.png'),
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          const Image(
+                              image: NetworkImage(
+                                  'https://static.thenounproject.com/png/380306-200.png')),
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            color: Colors.white,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.deepOrange,
+                                ),
+                                Container(
+                                  height: 12,
+                                  width: 12,
+                                  margin: const EdgeInsets.only(bottom: 5),
+                                  child:
+                                      const CircularProgressIndicator.adaptive(
+                                    backgroundColor: Colors.deepOrange,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.black),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                  ]),
+                ),
+              ),
+            );
+          }
+        });
   }
 }

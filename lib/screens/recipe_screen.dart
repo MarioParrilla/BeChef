@@ -398,6 +398,8 @@ class _FormRecipe extends StatelessWidget {
               labelText: 'Pasos a seguir',
               initialValue: recipe != null ? recipe!.steps : '',
               hintText: '1.Primero deberemos...',
+              keyboardType: TextInputType.multiline,
+              maxLines: 70,
               validator: (String value) => value.length < 20001
                   ? null
                   : 'Debe tener menos de 1000 caracteres',

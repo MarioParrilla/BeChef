@@ -1,6 +1,7 @@
 import 'package:be_chef_proyect/providers/providers.dart';
 import 'package:be_chef_proyect/screens/screens.dart';
 import 'package:be_chef_proyect/services/services.dart';
+import 'package:be_chef_proyect/utils/AppData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,37 +14,43 @@ class HomeScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (_) => BotttonNavProvider(),
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Image(
-              image: AssetImage('assets/bechef_logo.png'),
-              width: 50,
-              height: 50,
-              color: Colors.white),
-          backgroundColor: Colors.deepOrange,
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout_rounded),
-              onPressed: () {
-                authProvider.logout();
-                NotificationsService.showSnackBar(
-                    'Has cerrado sesión en tu cuenta');
-                Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const LoginScreen(),
-                      transitionsBuilder: (_, animation, __, child) =>
-                          FadeTransition(opacity: animation, child: child),
-                      transitionDuration: const Duration(milliseconds: 500),
-                    ));
-              },
-            ),
-          ],
+      child: WillPopScope(
+        onWillPop: () async {
+          return await showDialog(
+              context: context, builder: (_) => AppData.alertBacks(context));
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: const Image(
+                image: AssetImage('assets/bechef_logo.png'),
+                width: 50,
+                height: 50,
+                color: Colors.white),
+            backgroundColor: Colors.deepOrange,
+            elevation: 0,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout_rounded),
+                onPressed: () {
+                  authProvider.logout();
+                  NotificationsService.showSnackBar(
+                      'Has cerrado sesión en tu cuenta');
+                  Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const LoginScreen(),
+                        transitionsBuilder: (_, animation, __, child) =>
+                            FadeTransition(opacity: animation, child: child),
+                        transitionDuration: const Duration(milliseconds: 500),
+                      ));
+                },
+              ),
+            ],
+          ),
+          bottomNavigationBar: const _BNavBar(),
+          body: const _Pages(),
         ),
-        bottomNavigationBar: const _BNavBar(),
-        body: const _Pages(),
       ),
     );
   }

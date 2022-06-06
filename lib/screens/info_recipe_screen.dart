@@ -79,8 +79,9 @@ class _ImageOfCard extends StatelessWidget {
 class Auxdata {
   final String autor;
   final double rate;
+  final double rateOfAutor;
 
-  Auxdata(this.autor, this.rate);
+  Auxdata(this.autor, this.rate, this.rateOfAutor);
 }
 
 class _FormRecipe extends StatelessWidget {
@@ -96,7 +97,10 @@ class _FormRecipe extends StatelessWidget {
       String autorId = await recipeService.findUsernameById(
           context, recipe!.idAutor.toString());
       double rate = await recipeService.getRate(context, recipe!.id!);
-      return Auxdata(autorId, double.parse(rate.toStringAsPrecision(2)));
+      double rateOfAutor = await recipeService.getRateOfAutor(
+          context, recipe!.id!, recipe!.idAutor!);
+      return Auxdata(autorId, double.parse(rate.toStringAsPrecision(2)),
+          double.parse(rateOfAutor.toStringAsPrecision(2)));
     }
 
     return FutureBuilder(
@@ -163,7 +167,7 @@ class _FormRecipe extends StatelessWidget {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   RatingBar(
-                      initialRating: 0,
+                      initialRating: (snapshot.data! as Auxdata).rateOfAutor,
                       minRating: 0,
                       direction: Axis.horizontal,
                       allowHalfRating: true,

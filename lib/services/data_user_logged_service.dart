@@ -28,13 +28,21 @@ class DataUserLoggedService extends ChangeNotifier {
 
       if (response.containsKey('username')) {
         User user = User.fromMap(response);
-        user.username =
-            const Utf8Decoder().convert(user.username!.runes.toList());
-        user.email = const Utf8Decoder().convert(user.email!.runes.toList());
-        user.description =
-            const Utf8Decoder().convert(user.description!.runes.toList());
-        user.password =
-            const Utf8Decoder().convert(user.password!.runes.toList());
+        if (user.username != null) {
+          user.username =
+              const Utf8Decoder().convert(user.username!.runes.toList());
+        }
+        if (user.email != null) {
+          user.email = const Utf8Decoder().convert(user.email!.runes.toList());
+        }
+        if (user.description != null) {
+          user.description =
+              const Utf8Decoder().convert(user.description!.runes.toList());
+        }
+        if (user.password != null) {
+          user.password =
+              const Utf8Decoder().convert(user.password!.runes.toList());
+        }
 
         return user;
       } else {
@@ -72,13 +80,21 @@ class DataUserLoggedService extends ChangeNotifier {
       Navigator.of(context).pop();
       if (response.containsKey('username')) {
         User user = User.fromMap(response);
-        user.username =
-            const Utf8Decoder().convert(user.username!.runes.toList());
-        user.email = const Utf8Decoder().convert(user.email!.runes.toList());
-        user.description =
-            const Utf8Decoder().convert(user.description!.runes.toList());
-        user.password =
-            const Utf8Decoder().convert(user.password!.runes.toList());
+        if (user.username != null) {
+          user.username =
+              const Utf8Decoder().convert(user.username!.runes.toList());
+        }
+        if (user.email != null) {
+          user.email = const Utf8Decoder().convert(user.email!.runes.toList());
+        }
+        if (user.description != null) {
+          user.description =
+              const Utf8Decoder().convert(user.description!.runes.toList());
+        }
+        if (user.password != null) {
+          user.password =
+              const Utf8Decoder().convert(user.password!.runes.toList());
+        }
 
         return user;
       } else {

@@ -26,7 +26,6 @@ class RecipeService extends ChangeNotifier {
     try {
       final request = await http.get(url).timeout(const Duration(seconds: 15));
       final response = json.decode(request.body);
-
       response.forEach((value) {
         final temp = Recipe.fromMap(value);
         temp.description =
@@ -90,8 +89,36 @@ class RecipeService extends ChangeNotifier {
       final request = await http.get(url).timeout(const Duration(seconds: 15));
       final response = json.decode(request.body);
       rate = response;
+      rate = double.parse(rate.toStringAsPrecision(3));
     } catch (e) {
       print('Error getRate ${e}');
+      await showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AppData.alert(context));
+    }
+    //await Future.delayed(const Duration(seconds: 3));
+    return rate;
+  }
+
+  Future<double> getRateOfAutor(
+      BuildContext context, int recipeId, int userId) async {
+    double rate = 0;
+
+    //final url = Uri.https(AppData.baseUrl, '/api/recipes/rate/' + recipeId.toString());
+    print('${recipeId} / ${userId}');
+    final url = Uri.http(AppData.baseUrl,
+        '/api/recipes/rateOf/' + recipeId.toString() + '-' + userId.toString());
+
+    try {
+      final request = await http.get(url).timeout(const Duration(seconds: 15));
+
+      final response = json.decode(request.body);
+      rate = response;
+      print(rate);
+      rate = double.parse(rate.toStringAsPrecision(3));
+    } catch (e) {
+      print('Error getRateOfAutor ${e}');
       await showDialog(
           barrierDismissible: false,
           context: context,
