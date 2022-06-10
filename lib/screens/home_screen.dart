@@ -11,6 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthService>(context, listen: false);
+    final loginForm = Provider.of<LoginFormProvider>(context);
 
     return ChangeNotifierProvider(
       create: (_) => BotttonNavProvider(),
@@ -34,6 +35,10 @@ class HomeScreen extends StatelessWidget {
                 icon: const Icon(Icons.logout_rounded),
                 onPressed: () {
                   authProvider.logout();
+
+                  loginForm.email = '';
+                  loginForm.password = '';
+                  loginForm.isLoading = false;
                   NotificationsService.showSnackBar(
                       'Has cerrado sesión en tu cuenta');
                   Navigator.pushReplacement(

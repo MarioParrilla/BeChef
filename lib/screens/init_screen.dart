@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:be_chef_proyect/screens/screens.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/login_form_provider.dart';
+
 class InitScreen extends StatelessWidget {
   const InitScreen({Key? key}) : super(key: key);
 
@@ -35,6 +37,10 @@ class InitScreen extends StatelessWidget {
               ));
         } else {
           authService.logout();
+          final loginForm = Provider.of<LoginFormProvider>(context);
+          loginForm.email = '';
+          loginForm.password = '';
+          loginForm.isLoading = false;
           Navigator.pushReplacement(
               context,
               PageRouteBuilder(

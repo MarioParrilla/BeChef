@@ -230,8 +230,8 @@ class _FormRecipe extends StatelessWidget {
           CustomInputField(
               color: Colors.deepOrange,
               initialValue: username,
-              labelText: 'Username',
-              hintText: 'My Username',
+              labelText: 'Usuario',
+              hintText: 'Mi nombre de usuario',
               validator: (String value) => value.length > 3 && value.length < 16
                   ? null
                   : 'Debe tener entre 4 y 15 caracteres',
@@ -241,8 +241,8 @@ class _FormRecipe extends StatelessWidget {
               minLines: 2,
               maxLines: 3,
               initialValue: description,
-              labelText: 'Description',
-              hintText: 'My Description',
+              labelText: 'Descipcion',
+              hintText: 'Mi descripcion',
               validator: (String value) => value.length < 101
                   ? null
                   : 'Debe tener menos de 100 caracteres',

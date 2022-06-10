@@ -139,10 +139,10 @@ class _LoginForm extends StatelessWidget {
                           if (!loginForm.isValidForm()) return;
 
                           loginForm.isLoading = true;
-
+                          print('${loginForm.email} = ${loginForm.password}');
                           final String? errorMessage = await authService.login(
                               context, loginForm.email, loginForm.password);
-
+                          print('errorMessage: $errorMessage');
                           if (errorMessage == null) {
                             dynamic user = await dataUserLoggedService
                                 .getUserByToken(context);
@@ -164,6 +164,11 @@ class _LoginForm extends StatelessWidget {
                               ));
                             } else {
                               authService.logout();
+                              final loginForm =
+                                  Provider.of<LoginFormProvider>(context);
+                              loginForm.email = '';
+                              loginForm.password = '';
+                              loginForm.isLoading = false;
                               NotificationsService.showSnackBar(
                                   'Inicio de sesión incorrecto');
                               loginForm.isLoading = false;

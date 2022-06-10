@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../models/user.dart';
+import '../providers/providers.dart';
 import '../utils/AppData.dart';
 
 class AuthService extends ChangeNotifier {
@@ -31,6 +33,7 @@ class AuthService extends ChangeNotifier {
           .timeout(const Duration(seconds: 15));
 
       final Map<String, dynamic> response = json.decode(request.body);
+      print(response);
       if (response.containsKey('token')) {
         await storage.write(key: 'token', value: response['token']);
         return null;
