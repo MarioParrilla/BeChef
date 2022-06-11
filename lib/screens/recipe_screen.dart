@@ -140,20 +140,7 @@ class RecipeScreen extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          _ImageOfCard(urlImg: newUrlImg),
-                          Positioned(
-                            top: MediaQuery.of(context).size.height * 0.17,
-                            left: MediaQuery.of(context).size.width * 0.41,
-                            child: const Icon(
-                              Icons.camera_alt,
-                              color: Color.fromRGBO(255, 255, 255, 0.8),
-                              size: 80,
-                            ),
-                          ),
-                        ],
-                      ),
+                      _ImageOfCard(urlImg: newUrlImg),
                       _FormRecipe(
                           recipe: recipe,
                           categories:
@@ -313,30 +300,44 @@ class _ImageOfCard extends StatelessWidget {
     }
 
     return GestureDetector(
-        onTap: () async {
-          showDialog(context: context, builder: (context) => alert(context));
-        },
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                color: Colors.deepOrange,
-                height: 250,
-                width: double.infinity,
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/bechef_logo.png'),
-                  image: urlImg != null
-                      ? getImage(urlImg)
-                      : const NetworkImage(
-                          'https://static.thenounproject.com/png/380306-200.png'),
-                  imageErrorBuilder: (context, error, stackTrace) => const Image(
-                      image: NetworkImage(
-                          'https://static.thenounproject.com/png/380306-200.png')),
-                  fit: BoxFit.cover,
+      onTap: () async {
+        showDialog(context: context, builder: (context) => alert(context));
+      },
+      child: Stack(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  color: Colors.deepOrange,
+                  height: 250,
+                  width: double.infinity,
+                  child: FadeInImage(
+                    placeholder: const AssetImage('assets/bechef_logo.png'),
+                    image: urlImg != null
+                        ? getImage(urlImg)
+                        : const NetworkImage(
+                            'https://static.thenounproject.com/png/380306-200.png'),
+                    imageErrorBuilder: (context, error, stackTrace) => const Image(
+                        image: NetworkImage(
+                            'https://static.thenounproject.com/png/380306-200.png')),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            )));
+              )),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.17,
+            left: MediaQuery.of(context).size.width * 0.41,
+            child: const Icon(
+              Icons.camera_alt,
+              color: Color.fromRGBO(255, 255, 255, 0.8),
+              size: 80,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

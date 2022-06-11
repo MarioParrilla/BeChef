@@ -170,33 +170,38 @@ class _ImageOfCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        showDialog(context: context, builder: alert);
+        showDialog(context: context, builder: (context) => alert(context));
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
-            height: 250,
-            width: double.infinity,
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  maxRadius: 250,
-                  backgroundImage: getImage(urlImg),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                height: 250,
+                width: double.infinity,
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      maxRadius: 250,
+                      backgroundImage: getImage(urlImg),
+                    ),
+                  ],
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 150, left: 132),
-                  child: const Icon(
-                    Icons.camera_alt,
-                    color: Color.fromARGB(110, 68, 68, 68),
-                    size: 80,
-                  ),
-                )
-              ],
+              ),
             ),
           ),
-        ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.17,
+            left: MediaQuery.of(context).size.width * 0.41,
+            child: const Icon(
+              Icons.camera_alt,
+              color: Color.fromARGB(204, 29, 29, 29),
+              size: 80,
+            ),
+          ),
+        ],
       ),
     );
   }
