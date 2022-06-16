@@ -153,108 +153,115 @@ class RecipeScreen extends StatelessWidget {
       );
     }
 
-    return FutureBuilder(
-        future: loadCategories(context),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return Scaffold(
-                appBar: AppBar(
-                  backgroundColor: Colors.white12,
-                  foregroundColor: Colors.black,
-                  elevation: 0,
-                ),
-                body: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      _ImageOfCard(urlImg: newUrlImg),
-                      _FormRecipe(
-                          recipe: recipe,
-                          categories:
-                              snapshot.data as List<DropdownMenuItem<String>>),
+    return WillPopScope(
+        onWillPop: () async {
+          recipeProvider!.urlImg = '';
+          newImg = null;
+          return true;
+        },
+        child: FutureBuilder(
+            future: loadCategories(context),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                return Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Colors.white12,
+                      foregroundColor: Colors.black,
+                      elevation: 0,
+                    ),
+                    body: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          _ImageOfCard(urlImg: newUrlImg),
+                          _FormRecipe(
+                              recipe: recipe,
+                              categories: snapshot.data
+                                  as List<DropdownMenuItem<String>>),
+                        ],
+                      ),
+                    ),
+                    floatingActionButton: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        type
+                            ? FloatingActionButton(
+                                child: const Icon(Icons.delete),
+                                backgroundColor: Colors.deepOrange,
+                                onPressed: () async => showDialog(
+                                    context: context,
+                                    builder: (_) => alertDelete()),
+                                heroTag: null,
+                              )
+                            : const SizedBox(),
+                        const SizedBox(width: 10),
+                        FloatingActionButton(
+                          child: const Icon(Icons.save_rounded),
+                          backgroundColor: Colors.deepOrange,
+                          onPressed: () async => {
+                            type ? await modifyRecipe() : await createRecipe()
+                          },
+                          heroTag: null,
+                        )
+                      ],
+                    ));
+              } else if (snapshot.hasError) {
+                return Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: Colors.white12,
+                    foregroundColor: Colors.black,
+                    elevation: 0,
+                  ),
+                  body: Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SizedBox(height: 50),
+                      Icon(Icons.error_outline,
+                          color: Colors.deepOrange, size: 100),
+                      Text('Se produjo un error',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold))
                     ],
-                  ),
-                ),
-                floatingActionButton: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    type
-                        ? FloatingActionButton(
-                            child: const Icon(Icons.delete),
-                            backgroundColor: Colors.deepOrange,
-                            onPressed: () async => showDialog(
-                                context: context,
-                                builder: (_) => alertDelete()),
-                            heroTag: null,
-                          )
-                        : const SizedBox(),
-                    const SizedBox(width: 10),
-                    FloatingActionButton(
-                      child: const Icon(Icons.save_rounded),
-                      backgroundColor: Colors.deepOrange,
-                      onPressed: () async =>
-                          {type ? await modifyRecipe() : await createRecipe()},
-                      heroTag: null,
-                    )
-                  ],
-                ));
-          } else if (snapshot.hasError) {
-            return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.white12,
-                foregroundColor: Colors.black,
-                elevation: 0,
-              ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SizedBox(height: 50),
-                  Icon(Icons.error_outline,
-                      color: Colors.deepOrange, size: 100),
-                  Text('Se produjo un error',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-                ],
-              )),
-              floatingActionButton: FloatingActionButton(
-                child: const Icon(Icons.close_rounded),
-                backgroundColor: Colors.deepOrange,
-                onPressed: () async => Navigator.of(context).pop(),
-                heroTag: null,
-              ),
-            );
-          } else {
-            return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.white12,
-                foregroundColor: Colors.black,
-                elevation: 0,
-              ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SizedBox(height: 50),
-                  CircularProgressIndicator.adaptive(
+                  )),
+                  floatingActionButton: FloatingActionButton(
+                    child: const Icon(Icons.close_rounded),
                     backgroundColor: Colors.deepOrange,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                    onPressed: () async => Navigator.of(context).pop(),
+                    heroTag: null,
                   ),
-                  SizedBox(height: 10),
-                  Text('Cargando información...',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-                ],
-              )),
-              floatingActionButton: FloatingActionButton(
-                child: const Icon(Icons.close_rounded),
-                backgroundColor: Colors.deepOrange,
-                onPressed: () async => Navigator.of(context).pop(),
-                heroTag: null,
-              ),
-            );
-          }
-        });
+                );
+              } else {
+                return Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: Colors.white12,
+                    foregroundColor: Colors.black,
+                    elevation: 0,
+                  ),
+                  body: Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SizedBox(height: 50),
+                      CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.deepOrange,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                      ),
+                      SizedBox(height: 10),
+                      Text('Cargando información...',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold))
+                    ],
+                  )),
+                  floatingActionButton: FloatingActionButton(
+                    child: const Icon(Icons.close_rounded),
+                    backgroundColor: Colors.deepOrange,
+                    onPressed: () async => Navigator.of(context).pop(),
+                    heroTag: null,
+                  ),
+                );
+              }
+            }));
   }
 }
 
