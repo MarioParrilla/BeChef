@@ -6,63 +6,74 @@ import 'package:be_chef_proyect/providers/providers.dart';
 import 'package:be_chef_proyect/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/AppData.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AuthBackground(
-          colors: [Colors.orange[900]!, Colors.deepOrange],
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 200,
-                ),
-                CardContainer(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text('LOGIN',
-                          style: Theme.of(context).textTheme.headline4),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      ChangeNotifierProvider(
-                        create: (_) => LoginFormProvider(),
-                        child: const _LoginForm(color: Colors.deepOrange),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                TextButton(
-                    child: const Text('¿No tienes una cuenta?',
-                        style: TextStyle(color: Colors.black54, fontSize: 18)),
-                    style: ButtonStyle(
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.deepOrange),
+    return WillPopScope(
+        onWillPop: () async {
+          return await showDialog(
+              context: context, builder: (_) => AppData.alertBacks(context));
+        },
+        child: Scaffold(
+          body: AuthBackground(
+              colors: [Colors.orange[900]!, Colors.deepOrange],
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 200,
                     ),
-                    onPressed: () =>
-                        Navigator.of(context).pushReplacement(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => const RegisterScreen(),
-                          transitionsBuilder: (_, animation, __, child) =>
-                              FadeTransition(opacity: animation, child: child),
-                          transitionDuration: const Duration(milliseconds: 200),
-                        ))),
-                const SizedBox(
-                  height: 15,
+                    CardContainer(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text('LOGIN',
+                              style: Theme.of(context).textTheme.headline4),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          ChangeNotifierProvider(
+                            create: (_) => LoginFormProvider(),
+                            child: const _LoginForm(color: Colors.deepOrange),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    TextButton(
+                        child: const Text('¿No tienes una cuenta?',
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 18)),
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.deepOrange),
+                        ),
+                        onPressed: () => Navigator.of(context)
+                                .pushReplacement(PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  const RegisterScreen(),
+                              transitionsBuilder: (_, animation, __, child) =>
+                                  FadeTransition(
+                                      opacity: animation, child: child),
+                              transitionDuration:
+                                  const Duration(milliseconds: 200),
+                            ))),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
-    );
+              )),
+        ));
   }
 }
 
