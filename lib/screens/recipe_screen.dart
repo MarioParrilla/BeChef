@@ -47,7 +47,6 @@ class RecipeScreen extends StatelessWidget {
           recipeProvider!.stepsChanged ||
           recipeProvider!.categoryChanged ||
           recipeProvider!.urlImgChanged) {
-        print(newImg);
         dynamic newRecipe = await recipeService.changeDataRecipe(
             context,
             recipe.id.toString(),
@@ -126,6 +125,34 @@ class RecipeScreen extends StatelessWidget {
         Navigator.of(context).pop();
     }
 
+    AlertDialog alertDelete() {
+      return AlertDialog(
+        title: const Text("¿Desea eliminar la receta?"),
+        content: Container(
+          height: 130,
+          child: Column(
+            children: [
+              TextButton(
+                  onPressed: () async => {
+                        Navigator.of(context).pop(),
+                        await removeRecipe(),
+                      },
+                  child: const Text(
+                    "Si",
+                    style: TextStyle(color: Colors.deepOrange),
+                  )),
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text(
+                    "No",
+                    style: TextStyle(color: Colors.deepOrange),
+                  )),
+            ],
+          ),
+        ),
+      );
+    }
+
     return FutureBuilder(
         future: loadCategories(context),
         builder: (context, snapshot) {
@@ -155,7 +182,9 @@ class RecipeScreen extends StatelessWidget {
                         ? FloatingActionButton(
                             child: const Icon(Icons.delete),
                             backgroundColor: Colors.deepOrange,
-                            onPressed: () async => await removeRecipe(),
+                            onPressed: () async => showDialog(
+                                context: context,
+                                builder: (_) => alertDelete()),
                             heroTag: null,
                           )
                         : const SizedBox(),

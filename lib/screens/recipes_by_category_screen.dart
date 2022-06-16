@@ -2,6 +2,7 @@ import 'package:be_chef_proyect/providers/list_category_provider.dart';
 import 'package:be_chef_proyect/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../models/Recipe.dart';
 import '../providers/providers.dart';
@@ -89,20 +90,75 @@ class RecipesByCategoryPageScreen extends StatelessWidget {
                             ],
                           ));
               } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(height: 50),
-                    CircularProgressIndicator.adaptive(
-                      backgroundColor: Colors.deepOrange,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                return Shimmer.fromColors(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      controller: scrollController,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                border:
+                                    Border.all(color: Colors.black12, width: 1),
+                              ),
+                              padding: const EdgeInsets.only(right: 10),
+                              height: 150,
+                              child: Row(
+                                children: [
+                                  const ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10)),
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(
+                                        left: 10,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      width: 150,
+                                      child: Column(children: [
+                                        Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 10),
+                                            child: const Text(
+                                              'Nombre',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )),
+                                        const Flexible(
+                                            child: Text(
+                                          'Descripcion',
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        )),
+                                      ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    SizedBox(height: 10),
-                    Text('Cargando recetas...',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold))
-                  ],
-                );
+                    baseColor: Colors.white70,
+                    highlightColor: Colors.grey.shade300);
               }
             }));
   }
@@ -353,7 +409,7 @@ class _RecipeCard extends StatelessWidget {
                                   recipe.name!,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -363,7 +419,7 @@ class _RecipeCard extends StatelessWidget {
                               recipe.description!,
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                               ),
                             )),
@@ -475,7 +531,7 @@ class _RecipeCard extends StatelessWidget {
                                   recipe.name!,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -485,7 +541,7 @@ class _RecipeCard extends StatelessWidget {
                               recipe.description!,
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                               ),
                             )),

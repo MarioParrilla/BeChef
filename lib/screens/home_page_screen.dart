@@ -2,6 +2,7 @@ import 'package:be_chef_proyect/screens/info_recipe_screen.dart';
 import 'package:be_chef_proyect/screens/recipes_by_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../models/models.dart';
 import '../services/services.dart';
@@ -58,19 +59,74 @@ class HomePageScreen extends StatelessWidget {
               ),
             );
           } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(height: 50),
-                CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.deepOrange,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                ),
-                SizedBox(height: 10),
-                Text('Cargando categorias...',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-              ],
-            );
+            return Shimmer.fromColors(
+                child: ListView.builder(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: 6,
+                    itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: ListTile(
+                          title: Container(
+                              width: double.infinity,
+                              height: 170,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 10),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: GestureDetector(
+                                          onTap: () => {},
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                'Categoria',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 3, top: 3),
+                                                  child: const Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_outlined,
+                                                      size: 15,
+                                                      color: Colors.black)),
+                                            ],
+                                          ),
+                                        )),
+                                    const SizedBox(height: 5),
+                                    Expanded(
+                                      child: ListView.builder(
+                                          controller: scrollController,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          itemCount: 3,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) =>
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 8.0),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: Container(
+                                                    width: 150.0,
+                                                    height: 150.0,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )),
+                                    ),
+                                  ])),
+                        ))),
+                baseColor: Colors.white70,
+                highlightColor: Colors.grey.shade300);
           }
         });
   }
@@ -200,19 +256,72 @@ class _HorizontalRecipes extends StatelessWidget {
                                 ])),
                       ));
           } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(height: 50),
-                CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.deepOrange,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            return Shimmer.fromColors(
+                child: ListTile(
+                  title: Container(
+                      width: double.infinity,
+                      height: 170,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: GestureDetector(
+                                  onTap: () => {
+                                    Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (_, __, ___) =>
+                                              RecipesByCategoryPageScreen(
+                                                  category),
+                                        )),
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        category,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 3, top: 3),
+                                          child: const Icon(
+                                              Icons.arrow_forward_ios_outlined,
+                                              size: 15,
+                                              color: Colors.black)),
+                                    ],
+                                  ),
+                                )),
+                            const SizedBox(height: 5),
+                            Expanded(
+                              child: ListView.builder(
+                                  controller: scrollController,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: 3,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          child: Container(
+                                            width: 150.0,
+                                            height: 150.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )),
+                            ),
+                          ])),
                 ),
-                SizedBox(height: 10),
-                Text('Cargando recetas...',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-              ],
-            );
+                baseColor: Colors.white70,
+                highlightColor: Colors.grey.shade300);
           }
         });
   }

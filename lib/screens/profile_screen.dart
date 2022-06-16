@@ -2,6 +2,7 @@ import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/services/recipe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../providers/providers.dart';
 import 'screens.dart';
@@ -18,39 +19,28 @@ class ProfileScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+      backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             _ProfileHeader(height: height),
-            true
-                ? TextButton(
-                    onPressed: () =>
-                        Navigator.of(context).pushNamed('editProfile'),
-                    child: Text('Editar Perfil'),
-                    style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.deepOrange),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side:
-                                        BorderSide(color: Colors.deepOrange)))))
-                : const SizedBox(height: 48),
+            TextButton(
+                onPressed: () => Navigator.of(context).pushNamed('editProfile'),
+                child: const Text('Editar Perfil'),
+                style: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.deepOrange),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side:
+                                const BorderSide(color: Colors.deepOrange))))),
             const SizedBox(height: 5),
-            // ignore: dead_code
-            true
-                ? const Text('Tus Recetas',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-                : const Text('Sus Recetas',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 5),
-
+            const Text('Tus Recetas',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             FutureBuilder(
                 future: recipeService.loadRecipesUserLogged(context),
                 builder: (context, snapshot) {
@@ -97,21 +87,70 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(height: 50),
-                        CircularProgressIndicator.adaptive(
-                          backgroundColor: Colors.deepOrange,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black),
+                    return Shimmer.fromColors(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border:
+                                  Border.all(color: Colors.black12, width: 1),
+                            ),
+                            padding: const EdgeInsets.only(right: 10),
+                            height: 150,
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10)),
+                                  child: Container(
+                                    width: 100,
+                                    height: 150,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                      left: 10,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    width: 150,
+                                    child: Column(children: [
+                                      Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
+                                          child: const Text(
+                                            'Nombre',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                      const Flexible(
+                                          child: Text(
+                                        'Descripcion',
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      )),
+                                    ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        Text('Cargando recetas...',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold))
-                      ],
-                    );
+                        baseColor: Colors.white70,
+                        highlightColor: Colors.grey.shade300);
                   }
                 })
           ],
@@ -173,7 +212,8 @@ class _ProfileHeader extends StatelessWidget {
               child: Text(username,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
             ),
             SizedBox(
                 width: 150,
@@ -181,7 +221,7 @@ class _ProfileHeader extends StatelessWidget {
                   description,
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                   ),
                 )),
@@ -340,19 +380,67 @@ class _RecipeCard extends StatelessWidget {
               ],
             );
           } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(height: 50),
-                CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.deepOrange,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            return Shimmer.fromColors(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black12, width: 1),
+                    ),
+                    padding: const EdgeInsets.only(right: 10),
+                    height: 150,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)),
+                          child: Container(
+                            width: 100,
+                            height: 150,
+                            color: Colors.white,
+                          ),
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              left: 10,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            width: 150,
+                            child: Column(children: [
+                              Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: const Text(
+                                    'Nombre',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                              const Flexible(
+                                  child: Text(
+                                'Descripcion',
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              )),
+                            ]),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                SizedBox(height: 10),
-                Text('Cargando informacion...',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-              ],
-            );
+                baseColor: Colors.white70,
+                highlightColor: Colors.grey.shade300);
           }
         });
   }

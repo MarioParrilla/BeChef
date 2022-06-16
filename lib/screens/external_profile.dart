@@ -3,6 +3,7 @@ import 'package:be_chef_proyect/services/recipe_service.dart';
 import 'package:be_chef_proyect/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../providers/providers.dart';
 import 'screens.dart';
@@ -83,21 +84,70 @@ class ExternalProfile extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(height: 50),
-                        CircularProgressIndicator.adaptive(
-                          backgroundColor: Colors.deepOrange,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black),
+                    return Shimmer.fromColors(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border:
+                                  Border.all(color: Colors.black12, width: 1),
+                            ),
+                            padding: const EdgeInsets.only(right: 10),
+                            height: 150,
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10)),
+                                  child: Container(
+                                    width: 100,
+                                    height: 150,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                      left: 10,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    width: 150,
+                                    child: Column(children: [
+                                      Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
+                                          child: const Text(
+                                            'Nombre',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                      const Flexible(
+                                          child: Text(
+                                        'Descripcion',
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      )),
+                                    ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        Text('Cargando recetas...',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold))
-                      ],
-                    );
+                        baseColor: Colors.white70,
+                        highlightColor: Colors.grey.shade300);
                   }
                 })
           ],

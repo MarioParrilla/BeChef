@@ -1,6 +1,7 @@
 import 'package:be_chef_proyect/models/models.dart';
 import 'package:be_chef_proyect/screens/external_profile.dart';
 import 'package:be_chef_proyect/services/services.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -151,7 +152,13 @@ class _FormRecipe extends StatelessWidget {
                   const Text('Pasos a seguir',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Text(recipe!.steps ?? 'Error'),
+                  ExpandableText(
+                    recipe!.steps ?? 'Error',
+                    expandText: 'Ver mas',
+                    collapseText: 'Ver menos',
+                    maxLines: 5,
+                    linkColor: Colors.deepOrange,
+                  ),
                   const SizedBox(height: 10),
                   const Text('Valoracion',
                       style:

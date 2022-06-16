@@ -89,7 +89,7 @@ class RecipeService extends ChangeNotifier {
       final request = await http.get(url).timeout(const Duration(seconds: 15));
       final response = json.decode(request.body);
       rate = response;
-      rate = double.parse(rate.toStringAsPrecision(3));
+      rate = double.parse(rate.toStringAsPrecision(2));
     } catch (e) {
       print('Error getRate ${e}');
       await showDialog(
