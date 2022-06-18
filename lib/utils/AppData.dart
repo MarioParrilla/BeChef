@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppData {
-  static const String _baseUrl = 'bechef.ddns.net:8080';
+  static const String _baseUrl = 'bechef.ddns.net';
   //static const String _baseUrl = '192.168.1.62:8080';
 
   static const String regexToRemoveEmoji =

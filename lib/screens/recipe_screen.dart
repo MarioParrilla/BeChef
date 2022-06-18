@@ -97,14 +97,20 @@ class RecipeScreen extends StatelessWidget {
           recipeProvider!.stepsChanged ||
           recipeProvider!.categoryChanged ||
           recipeProvider!.urlImgChanged) {
-        dynamic newRecipe = await recipeService.changeDataRecipe(
-            context,
-            null,
-            sRecipe!.name!,
-            sRecipe!.description!,
-            sRecipe!.steps!,
-            sRecipe!.category!,
-            newImg);
+        dynamic newRecipe;
+        try {
+          newRecipe = await recipeService.changeDataRecipe(
+              context,
+              null,
+              sRecipe!.name!,
+              sRecipe!.description ?? '',
+              sRecipe!.steps ?? '',
+              sRecipe!.category!,
+              newImg);
+        } catch (e) {
+          NotificationsService.showSnackBar(
+              'Debes rellenar todos los campos obligatorios (Imagen no Obligatoria)');
+        }
 
         if (newRecipe.runtimeType == Recipe) {
           recipeProvider!.nameChanged = false;
@@ -325,7 +331,7 @@ class _ImageOfCard extends StatelessWidget {
 
     ImageProvider getImage(String? img) {
       if (img == null || img == '') {
-        return const AssetImage('assets/bechef_logo.png');
+        return const AssetImage('assets/loading.gif');
       }
 
       if (img.startsWith('http')) {
@@ -414,7 +420,7 @@ class _FormRecipe extends StatelessWidget {
         children: [
           CustomInputField(
               color: Colors.deepOrange,
-              labelText: 'Nombre',
+              labelText: 'Nombre*',
               initialValue: recipe != null ? recipe!.name : '',
               hintText: 'Pizza Carbonara',
               validator: (String value) => value.length > 3 && value.length < 51
@@ -443,7 +449,7 @@ class _FormRecipe extends StatelessWidget {
               onChange: (String value) => stepsChanged(value)),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
-              labelText: 'Categoría',
+              labelText: 'Categoría*',
               labelStyle: TextStyle(color: Colors.black54),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.deepOrange),

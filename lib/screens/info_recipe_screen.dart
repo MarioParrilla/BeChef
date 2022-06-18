@@ -62,7 +62,9 @@ class _ImageOfCard extends StatelessWidget {
               width: double.infinity,
               child: urlImg != null
                   ? FadeInImage(
-                      placeholder: const AssetImage('/assets/bechef_logo.png'),
+                      placeholder: const AssetImage(
+                        'assets/loading.gif',
+                      ),
                       image: NetworkImage(urlImg!),
                       imageErrorBuilder: (context, error, stackTrace) =>
                           const Image(
