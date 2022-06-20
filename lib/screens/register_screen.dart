@@ -34,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Text('REGISTER',
+                          Text('Registro',
                               style: Theme.of(context).textTheme.headline4),
                           const SizedBox(
                             height: 30,
