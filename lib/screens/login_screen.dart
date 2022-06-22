@@ -150,7 +150,7 @@ class _LoginForm extends StatelessWidget {
                           if (!loginForm.isValidForm()) return;
 
                           loginForm.isLoading = true;
-                          print('${loginForm.email} = ${loginForm.password}');
+
                           final String? errorMessage = await authService.login(
                               context, loginForm.email, loginForm.password);
                           print('errorMessage: $errorMessage');
